@@ -31,3 +31,36 @@ Nas vendas cada caixa terá um tipo de caixa Codigo e o Peso.
 ## ER
 
 ![ER Diagram!](er.png "AnImage")
+
+
+## Algebra Relacional:
+
+- lista de vendas
+
+- lista de vendas que ainda nao foram pagas
+
+- lista das lojas na base de dados
+
+- as caixas de uma venda de uma loja bem como a sua variedade e tamanho
+
+- obter reservas e o nome das lojas que fizeram para uma data
+
+- obter o nome da loja e os tipos de caixas reservados e sua quantidade de uma reserva
+
+- obter caixas que nao estao sobre regime de espera devido ao uso de fitofarmaceuticos
+
+- obter caixas que estao sobre regime de espera devido ao uso de fitofarmaceuticos
+
+- obter curas aplicadas numa data, numa variedade
+
+- obeter epoca dos tipos de caixa
+
+- obter os fitofarmaceutiocos usados nos tipos de caixa
+
+- obter fitofarmaceuticos ainda nao usados
+
+- obeter quatidade vendidada de cada tipo de caixa
+
+- obeter n de vendas para cada loja
+
+- obeter n de reservas de cada loja
