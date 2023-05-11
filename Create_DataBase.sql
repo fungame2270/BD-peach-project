@@ -61,7 +61,7 @@ CREATE TABLE PEACHS.CURAS (
 
 CREATE TABLE PEACHS.TIPODECAIXA (
 	code			VARCHAR(4),
-	size			VARCHAR(10),
+	size			VARCHAR(6)     NOT NULL    CHECK(size IN('SMALL','MEDIUM','BIG')) DEFAULT 'MEDIUM',
 	[availability]	INT				NOT NULL	CHECK([availability] >= 0),
 	pricekg			DECIMAL(4,2)	NOT NULL	CHECK(pricekg >= 0),
 	FOREIGN KEY (code) REFERENCES PEACHS.VARIEDADE(code),
