@@ -25,6 +25,11 @@ INSERT INTO LOJA (id, email, [name], [address], phone, nif) VALUES
 	(21,'m.tapada@gmail.com','Mini Tapada','R. da Escola Prim�ria 2, Almeirim','915628308',298476784),
 	(22,NULL,'Mini Teresa Rego','R. Vale de Salmeirim 27, Santar�m','914802278',987786371);
 
+INSERT INTO [LOGIN] (username,[password],store) VALUES
+	('adega_Casal','teste123',1),
+	('Girassol','teste123',8),
+	('adm','adm123',NULL);
+
 INSERT INTO VARIEDADE (code,[name],season,trees) VALUES
 	(1,'Latas Parta Caro�o','2023/8/15',43),
 	(2,'Brancos Amarelos','2023/7/11',60),

@@ -16,6 +16,14 @@ CREATE TABLE LOJA (
 	PRIMARY KEY (id)
 	);
 
+CREATE TABLE [LOGIN] (
+	username		VARCHAR(20),
+	[password]		VARCHAR(64)		NOT NULL,
+	store			INT,
+	PRIMARY KEY (username),
+	FOREIGN KEY (store) REFERENCES LOJA(id),
+	);
+
 CREATE TABLE VENDA (
 	id				INT,
 	[state]			VARCHAR(7)		NOT NULL	CHECK([state] IN('PAGO','CREDITO'))	DEFAULT 'CREDITO',

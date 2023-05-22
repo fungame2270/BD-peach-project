@@ -1,0 +1,11 @@
+C:\Users\tovic\Documents\base_dados\BD-peach-project\Aplication_Interface\UI_Peach\UI_Peach\bin\Debug\UI_Peach.exe.config
+C:\Users\tovic\Documents\base_dados\BD-peach-project\Aplication_Interface\UI_Peach\UI_Peach\bin\Debug\UI_Peach.exe
+C:\Users\tovic\Documents\base_dados\BD-peach-project\Aplication_Interface\UI_Peach\UI_Peach\bin\Debug\UI_Peach.pdb
+C:\Users\tovic\Documents\base_dados\BD-peach-project\Aplication_Interface\UI_Peach\UI_Peach\obj\Debug\UI_Peach.csproj.AssemblyReference.cache
+C:\Users\tovic\Documents\base_dados\BD-peach-project\Aplication_Interface\UI_Peach\UI_Peach\obj\Debug\UI_Peach.csproj.SuggestedBindingRedirects.cache
+C:\Users\tovic\Documents\base_dados\BD-peach-project\Aplication_Interface\UI_Peach\UI_Peach\obj\Debug\UI_Peach.Properties.Resources.resources
+C:\Users\tovic\Documents\base_dados\BD-peach-project\Aplication_Interface\UI_Peach\UI_Peach\obj\Debug\UI_Peach.csproj.GenerateResource.cache
+C:\Users\tovic\Documents\base_dados\BD-peach-project\Aplication_Interface\UI_Peach\UI_Peach\obj\Debug\UI_Peach.csproj.CoreCompileInputs.cache
+C:\Users\tovic\Documents\base_dados\BD-peach-project\Aplication_Interface\UI_Peach\UI_Peach\obj\Debug\UI_Peach.exe
+C:\Users\tovic\Documents\base_dados\BD-peach-project\Aplication_Interface\UI_Peach\UI_Peach\obj\Debug\UI_Peach.pdb
+C:\Users\tovic\Documents\base_dados\BD-peach-project\Aplication_Interface\UI_Peach\UI_Peach\obj\Debug\UI_Peach.Form1.resources
