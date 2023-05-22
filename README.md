@@ -64,3 +64,12 @@ Nas vendas cada caixa terá um tipo de caixa Codigo e o Peso.
 - obeter n de vendas para cada loja
 
 - obeter n de reservas de cada loja
+
+
+## Extras
+
+### Dados 
+
+- lojas sao reais exepeto nif e email
+
+- variriedades tambem contem valores reais

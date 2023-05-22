@@ -18,7 +18,7 @@ CREATE TABLE LOJA (
 
 CREATE TABLE VENDA (
 	id				INT,
-	[state]			VARCHAR(20)		NOT NULL,
+	[state]			VARCHAR(7)		NOT NULL	CHECK([state] IN('PAGO','CREDITO'))	DEFAULT 'CREDITO',
 	[date]			DATE			NOT NULL,
 	store			INT				NOT NULL,
 	PRIMARY KEY (id),
@@ -36,7 +36,7 @@ CREATE TABLE RESERVA (
 CREATE TABLE FITOFARMACEUTICOS (
 	id				INT,
 	[name]			VARCHAR(64)		NOT NULL,
-	interval_time	TIME,
+	interval_days	INT,
 	PRIMARY KEY (id),
 	);
 
@@ -51,7 +51,7 @@ CREATE TABLE VARIEDADE (
 CREATE TABLE CURAS (
 	fitofarmaceutic	INT,
 	variety			INT,
-	[dateh]			SMALLDATETIME	NOT NULL,
+	[dateH]			SMALLDATETIME	NOT NULL,
 	FOREIGN KEY (fitofarmaceutic) REFERENCES FITOFARMACEUTICOS(id),
 	FOREIGN KEY (variety) REFERENCES VARIEDADE(code),
 	PRIMARY KEY (fitofarmaceutic,variety),
@@ -70,6 +70,7 @@ CREATE TABLE TIPOCAIXARESERVA (
 	reservation		INT,
 	code			INT,
 	size			VARCHAR(6),
+	quantity		INT				NOT NULL,
 	FOREIGN KEY (code,size) REFERENCES TIPODECAIXA(code,size),
 	PRIMARY KEY (reservation,code,size),
 	);
@@ -80,7 +81,7 @@ CREATE TABLE CAIXA (
 	[weight]		DECIMAL(4,2)	NOT NULL	CHECK([weight] > 0),
 	code			INT				NOT NULL,
 	size			VARCHAR(6)		NOT NULL,
-	FOREIGN KEY (sale) REFERENCES VENDA(id),
+	FOREIGN KEY (sale) REFERENCES VENDA([id]),
 	FOREIGN KEY (code,size) REFERENCES TIPODECAIXA(code,size),
 	PRIMARY KEY (sale,[id]),
 	);
