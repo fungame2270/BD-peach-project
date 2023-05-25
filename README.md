@@ -65,7 +65,26 @@ Nas vendas cada caixa terá um tipo de caixa Codigo e o Peso.
 
 - obeter n de reservas de cada loja
 
+## Stored Procedure
 
+### Login Procedure
+```SQL
+CREATE PROCEDURE [loginP] (@username VARCHAR(20),@password VARCHAR(64),@store INT OUTPUT,@IsAdm BIT OUTPUT)
+AS
+	SELECT @store = store
+	FROM [LOGIN]
+	WHERE username = @username AND [password] = @password
+
+	IF @store IS NULL
+		SET @IsAdm = 1
+	ELSE
+		SET @IsAdm = 0
+
+CREATE PROC getStores
+AS
+
+Select * from LOJA
+```
 ## Extras
 
 ### Dados 

@@ -8,4 +8,5 @@ C:\Users\tovic\Documents\base_dados\BD-peach-project\Aplication_Interface\UI_Pea
 C:\Users\tovic\Documents\base_dados\BD-peach-project\Aplication_Interface\UI_Peach\UI_Peach\obj\Debug\UI_Peach.csproj.CoreCompileInputs.cache
 C:\Users\tovic\Documents\base_dados\BD-peach-project\Aplication_Interface\UI_Peach\UI_Peach\obj\Debug\UI_Peach.exe
 C:\Users\tovic\Documents\base_dados\BD-peach-project\Aplication_Interface\UI_Peach\UI_Peach\obj\Debug\UI_Peach.pdb
-C:\Users\tovic\Documents\base_dados\BD-peach-project\Aplication_Interface\UI_Peach\UI_Peach\obj\Debug\UI_Peach.Form1.resources
+C:\Users\tovic\Documents\base_dados\BD-peach-project\Aplication_Interface\UI_Peach\UI_Peach\obj\Debug\UI_Peach.AdmPanel.resources
+C:\Users\tovic\Documents\base_dados\BD-peach-project\Aplication_Interface\UI_Peach\UI_Peach\obj\Debug\UI_Peach.LoginPanel.resources

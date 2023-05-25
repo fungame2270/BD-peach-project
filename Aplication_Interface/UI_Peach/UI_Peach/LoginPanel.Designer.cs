@@ -1,6 +1,6 @@
 ﻿namespace UI_Peach
 {
-    partial class Form1
+    partial class LoginPanel
     {
         /// <summary>
         /// Required designer variable.

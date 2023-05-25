@@ -11,14 +11,16 @@ using System.Data.SqlClient;
 
 namespace UI_Peach
 {
-    public partial class Form1 : Form
+    public partial class LoginPanel : Form
     {
         private SqlConnection conn;
         private SqlCommand cmd;
         private SqlDataReader reader;
+        private bool IsAdm;
+        private int storeIdx;
 
 
-        public Form1()
+        public LoginPanel()
         {
             InitializeComponent();
         }
@@ -114,23 +116,27 @@ namespace UI_Peach
         {
             if (!verifySGBDConnection())
                 return;
-            cmd = new SqlCommand("select * from [LOGIN] where username = @username and password = @password");
-            cmd.Connection= conn;
-            cmd.Parameters.AddWithValue("@username",txtUser.Text);
-            cmd.Parameters.AddWithValue("@password",txtPass.Text);
-            reader = cmd.ExecuteReader();
-            reader.Read();
-            Console.WriteLine(reader["store"].ToString());
-            if(reader.HasRows)
+            cmd = new SqlCommand("[loginP]",conn);
+            cmd.CommandType= CommandType.StoredProcedure;
+            cmd.Parameters.Add("@username", SqlDbType.VarChar,20).Value = txtUser.Text;
+            cmd.Parameters.Add("@password", SqlDbType.VarChar,64).Value = txtPass.Text;
+            cmd.Parameters.Add("@store", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@IsAdm", SqlDbType.Bit).Direction = ParameterDirection.Output;
+            cmd.ExecuteNonQuery();
+            if (Convert.ToBoolean(cmd.Parameters["@IsAdm"].Value))
             {
-                MessageBox.Show("Login sucess");            }
+                Hide();
+                AdmPanel amdpanel = new AdmPanel();
+                amdpanel.Show();
+            }
             else
             {
-                MessageBox.Show("login fail");
+                storeIdx = Convert.ToInt32(cmd.Parameters["@store"].Value);
+
+                MessageBox.Show(storeIdx.ToString());
             }
 
             conn.Close();
-            reader.Close();
         }
     }
 }
