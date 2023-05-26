@@ -19,13 +19,33 @@ namespace UI_Peach
         public String Id { get { return _id; } set { _id = value; } }
         public String Name { get { return _name;} set { _name = value; } }
         public String Address { get { return _address;} set { _address = value; } }
-        public String Email { get { return _email;} set { _email = value; } }
+        public String Email
+        {
+            get
+            {
+                if (_email != "")
+                    return _email;
+                else
+                    return "Unknown";
+            }
+            set { _email = value; } 
+        }
         public String Phone { get { return _phone;} set { _phone = value; } }
-        public String Nif { get { return _nif;} set { _nif = value; } }
+        public String Nif 
+        { 
+            get 
+            {
+                if (_nif != "")
+                    return _nif;
+                else 
+                    return "Unknown";
+            } 
+            set { _nif = value; } 
+        }
 
         public override string ToString()
         {
-            return String.Format("{0,-50} nif:{1,10}", _name, _nif);
+            return _name;
         }
 
         public Store() : base() { }

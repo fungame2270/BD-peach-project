@@ -7,7 +7,7 @@ USE peachProject;
 go
 
 CREATE TABLE LOJA (
-	id				INT,
+	id				INT IDENTITY,
 	email			VARCHAR(64),
 	[name]          VARCHAR(64)		NOT NULL,
 	[address]		VARCHAR(64),
@@ -25,7 +25,7 @@ CREATE TABLE [LOGIN] (
 	);
 
 CREATE TABLE VENDA (
-	id				INT,
+	id				INT IDENTITY,
 	[state]			VARCHAR(7)		NOT NULL	CHECK([state] IN('PAGO','CREDITO'))	DEFAULT 'CREDITO',
 	[date]			DATE			NOT NULL,
 	store			INT				NOT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE VENDA (
 	);
 
 CREATE TABLE RESERVA (
-	id				INT,
+	id				INT IDENTITY,
 	[date]			DATE			NOT NULL,
 	store			INT				NOT NULL,
 	PRIMARY KEY (id),
@@ -42,7 +42,7 @@ CREATE TABLE RESERVA (
 	);
 
 CREATE TABLE FITOFARMACEUTICOS (
-	id				INT,
+	id				INT IDENTITY,
 	[name]			VARCHAR(64)		NOT NULL,
 	interval_days	INT,
 	PRIMARY KEY (id),
@@ -85,7 +85,7 @@ CREATE TABLE TIPOCAIXARESERVA (
 
 CREATE TABLE CAIXA (
 	sale			INT,
-	[id]			INT,
+	[id]			INT IDENTITY,
 	[weight]		DECIMAL(4,2)	NOT NULL	CHECK([weight] > 0),
 	code			INT				NOT NULL,
 	size			VARCHAR(6)		NOT NULL,
