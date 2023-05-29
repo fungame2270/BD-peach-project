@@ -62,3 +62,23 @@ JOIN VENDA AS V ON C.sale = V.id
 JOIN TIPODECAIXA AS TP ON C.code = TP.code AND C.size = TP.size
 JOIN VARIEDADE AS VR ON C.code = VR.code
 WHERE V.id = @venda
+go
+CREATE PROC addStore (@email VARCHAR(64) = NULL,@name VARCHAR(64),@address VARCHAR(64),@phone VARCHAR(9),@nif INT = NULL)
+AS
+INSERT INTO LOJA (email, [name], [address], phone, nif) VALUES
+(@email,@name,@address,@phone,@nif)
+go
+CREATE PROC newVenda (@state VARCHAR(7),@date DATE,@store INT)
+AS
+INSERT INTO VENDA ([state],[date],[store]) VALUES
+	(@state,@date,@store);
+go
+CREATE PROC addToVenda(@sale INT,@weigth DECIMAL(4,2),@code INT,@size VARCHAR(6))
+AS
+INSERT INTO CAIXA(sale,[weight],code,size) VALUES
+	(@sale,@weigth,@code,@size);
+go
+CREATE PROC lastIdSale(@id INT OUTPUT)
+AS
+SELECT @id=max(id)
+FROM VENDA

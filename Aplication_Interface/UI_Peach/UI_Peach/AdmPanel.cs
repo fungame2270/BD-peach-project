@@ -115,10 +115,10 @@ namespace UI_Peach
                 return;
             SqlCommand cmd = new SqlCommand("dbo.getVendas", conn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@state", SqlDbType.VarChar, 7).Value = store;
-            cmd.Parameters.Add("@store", SqlDbType.Int).Value = state;
+            cmd.Parameters.Add("@state", SqlDbType.VarChar, 7).Value = state;
+            cmd.Parameters.Add("@store", SqlDbType.Int).Value = store;
             SqlDataReader reader = cmd.ExecuteReader();
-            storeList.Items.Clear();
+            salesList.Items.Clear();
 
             while (reader.Read())
             {
@@ -167,6 +167,101 @@ namespace UI_Peach
                 Caixaslist.Items.Add(c);
             }
             conn.Close();
+        }
+
+        private void stateCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if (stateCheck.Checked)
+                loadSales(state: "CREDITO");
+            else
+                loadSales();
+        }
+
+        private void newStoreStore_Click(object sender, EventArgs e)
+        {
+            prepareToCreateStor(true);
+        }
+
+        private void createStoreButton_Click(object sender, EventArgs e)
+        {
+            if (!verifySGBDConnection())
+                return;
+            SqlCommand cmd = new SqlCommand("addStore", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@name", SqlDbType.VarChar, 64).Value = storeNameBox.Text;
+            cmd.Parameters.Add("@email", SqlDbType.VarChar, 64).Value = storeEmailBox.Text != "" ? storeEmailBox.Text : null;
+            cmd.Parameters.Add("@phone", SqlDbType.VarChar, 9).Value = storePhoneBox.Text;
+            cmd.Parameters.Add("@address", SqlDbType.VarChar, 64).Value = storeAddressBox.Text;
+            int? nif = Convert.ToInt32(storeNifBox.Text);
+            cmd.Parameters.Add("@nif", SqlDbType.Int).Value = storeNifBox.Text != "" ? nif : null; 
+            cmd.ExecuteNonQuery();
+            prepareToCreateStor(false);
+        }
+
+        private void cancelStoreC_Click(object sender, EventArgs e)
+        {
+            prepareToCreateStor(false);
+        }
+
+        private void prepareToCreateStor(bool x)
+        {
+            x = !x;
+            storeNameBox.Text = "";
+            storeEmailBox.Text = "";
+            storePhoneBox.Text = "";
+            storeAddressBox.Text = "";
+            storeNifBox.Text = "";
+            storeList.Enabled = x;
+            storeNameBox.ReadOnly = x;
+            storeEmailBox.ReadOnly = x;
+            storePhoneBox.ReadOnly = x;
+            storeAddressBox.ReadOnly = x;
+            storeNifBox.ReadOnly = x;
+            createStoreButton.Visible = !x;
+            cancelStoreC.Visible = !x;
+            newStoreStore.Visible = x;
+            storeList.Items.Clear();
+            if (x) { loadStores(); }
+        }
+
+        private void vendaComfirm_Click(object sender, EventArgs e)
+        {
+            if (!verifySGBDConnection())
+                return;
+            SqlCommand cmd = new SqlCommand("newVenda",conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@store", SqlDbType.Int).Value = Convert.ToInt32(vendacreatestore);
+            cmd.Parameters.Add("@state", SqlDbType.VarChar, 7).Value = vendacreatestate.Text;
+            cmd.Parameters.Add("@date", SqlDbType.Date).Value = DateTime.Now;
+            cmd.ExecuteNonQuery();
+
+            foreach(Caixa c in CaixasInVendaCreateList.Items)
+            {
+                cmd.CommandText = "addToVenda";
+                cmd.Parameters.Clear();
+                cmd.Parameters.Add("@sale", SqlDbType.Int).Value = Convert.ToInt32(vendacreatestore);
+                cmd.Parameters.Add("@state", SqlDbType.VarChar, 7).Value = vendacreatestate.Text;
+                cmd.Parameters.Add("@date", SqlDbType.Date).Value = DateTime.Now;
+
+            }
+
+        }
+
+        private void addCaixatoVenda_Click(object sender, EventArgs e)
+        {
+            Caixa c = new Caixa();
+            c.Variedade = CaixaVendaVariedadeBox.Text;
+            c.Size = CaixaVendaSizeBox.Text;
+            c.Weight = caixaVendaPesoBox.Text;
+            caixaVendaPesoBox.Text = "";
+            CaixaVendaSizeBox.Text = "";
+            CaixaVendaVariedadeBox.Text = "";
+            CaixasInVendaCreateList.Items.Add(c);
+        }
+
+        private void cancelVenda_Click(object sender, EventArgs e)
+        {
+            CaixasInVendaCreateList.Items.Clear();
         }
     }
 }
