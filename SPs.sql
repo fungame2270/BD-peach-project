@@ -68,17 +68,50 @@ AS
 INSERT INTO LOJA (email, [name], [address], phone, nif) VALUES
 (@email,@name,@address,@phone,@nif)
 go
-CREATE PROC newVenda (@state VARCHAR(7),@date DATE,@store INT)
+CREATE PROC newVenda (@state VARCHAR(7),@date DATE,@store INT,@venda INT OUTPUT)
 AS
+BEGIN
 INSERT INTO VENDA ([state],[date],[store]) VALUES
 	(@state,@date,@store);
+
+set @venda = SCOPE_IDENTITY()
+END
 go
 CREATE PROC addToVenda(@sale INT,@weigth DECIMAL(4,2),@code INT,@size VARCHAR(6))
 AS
 INSERT INTO CAIXA(sale,[weight],code,size) VALUES
 	(@sale,@weigth,@code,@size);
 go
-CREATE PROC lastIdSale(@id INT OUTPUT)
+
+CREATE PROC getReservas(@store INT = NULL)
 AS
-SELECT @id=max(id)
-FROM VENDA
+IF @store IS NULL
+BEGIN
+SELECT R.id,R.[date],R.store,LOJA.[name],sum(T.quantity) as quantity
+FROM RESERVA AS R JOIN LOJA on R.store = LOJA.id JOIN TIPOCAIXARESERVA as T on T.reservation = R.id
+Group by  R.id,R.[date],R.store,LOJA.[name]
+END
+ELSE
+BEGIN
+SELECT R.id,R.[date],R.store,LOJA.[name],sum(T.quantity) as quantity
+FROM RESERVA AS R JOIN LOJA on R.store = LOJA.id JOIN TIPOCAIXARESERVA as T on T.reservation = R.id
+WHERE R.store = @store
+Group by  R.id,R.[date],R.store,LOJA.[name]
+END
+go
+CREATE PROC getTipoCaixas(@reserva INT)
+AS
+SELECT TCR.reservation, V.code, V.[name] ,TCR.size, TCR.quantity ,TP.pricekg 
+FROM TIPOCAIXARESERVA AS TCR JOIN TIPODECAIXA AS TP on TCR.code = TP.code AND TP.size = TCR.size
+							 JOIN VARIEDADE AS V on V.code = TCR.code
+WHERE TCR.reservation = @reserva 
+go
+CREATE PROC getVariedadesD
+AS
+DECLARE @table TABLE (code INT,[name] VARCHAR(64),season DATE,trees INT,disponibilidade VARCHAR(10))
+INSERT INTO @table 
+SELECT *,''as disponibilidade FROM VARIEDADE
+UPDATE @table
+SET disponibilidade = 'curado'
+WHERE code in (SELECT * FROM getVariedadesComCuraAplicada())
+SELECT * from @table
