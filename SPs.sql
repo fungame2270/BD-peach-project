@@ -121,7 +121,7 @@ WHERE TCR.reservation = @reserva
 go
 
 
-CREATE PROC getVariedadesD
+CREATE PROC getVariedadesCuraState
 AS
 DECLARE @table TABLE (code INT,[name] VARCHAR(64),season DATE,trees INT,disponibilidade VARCHAR(10))
 INSERT INTO @table 
@@ -139,3 +139,13 @@ UPDATE VENDA
 SET [state] = @state
 WHERE id = @id
 
+
+CREATE PROC curasNaVariedade(@id INT)
+AS
+SELECT fitofarmaceutic,dateH
+FROM VARIEDADE JOIN CURAS on VARIEDADE.code = CURAS.variety
+WHERE variety = @id
+
+CREATE PROC getFito
+AS
+SELECT * FROM FITOFARMACEUTICOS
