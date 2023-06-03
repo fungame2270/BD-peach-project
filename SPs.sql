@@ -1,3 +1,21 @@
+DROP PROCEDURE IF EXISTS [loginP]
+DROP PROCEDURE IF EXISTS getStores
+DROP PROCEDURE IF EXISTS getVendas
+DROP PROCEDURE IF EXISTS getCaixasOfSale
+DROP PROCEDURE IF EXISTS addStore
+DROP PROCEDURE IF EXISTS newVenda
+DROP PROCEDURE IF EXISTS addToVenda
+DROP PROCEDURE IF EXISTS getReservas
+DROP PROCEDURE IF EXISTS getTipoCaixasRes
+DROP PROCEDURE IF EXISTS getVariedadesCuraState
+DROP PROCEDURE IF EXISTS updateVendaState
+DROP PROCEDURE IF EXISTS curasNaVariedade
+DROP PROCEDURE IF EXISTS getFito
+
+
+
+
+go
 CREATE PROCEDURE [loginP] (@username VARCHAR(20),@password VARCHAR(64),@store INT OUTPUT,@IsAdm BIT OUTPUT)
 AS
 	SELECT @store = store
@@ -111,8 +129,7 @@ Group by  R.id,R.[date],R.store,LOJA.[name]
 END
 go
 
-
-CREATE PROC getTipoCaixas(@reserva INT)
+CREATE PROC getTipoCaixasRes(@reserva INT)
 AS
 SELECT TCR.reservation, V.code, V.[name] ,TCR.size, TCR.quantity ,TP.pricekg 
 FROM TIPOCAIXARESERVA AS TCR JOIN TIPODECAIXA AS TP on TCR.code = TP.code AND TP.size = TCR.size
@@ -139,13 +156,13 @@ UPDATE VENDA
 SET [state] = @state
 WHERE id = @id
 
-
+go
 CREATE PROC curasNaVariedade(@id INT)
 AS
 SELECT fitofarmaceutic,dateH
 FROM VARIEDADE JOIN CURAS on VARIEDADE.code = CURAS.variety
 WHERE variety = @id
-
+go
 CREATE PROC getFito
 AS
 SELECT * FROM FITOFARMACEUTICOS

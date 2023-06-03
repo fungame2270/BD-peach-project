@@ -1,5 +1,3 @@
-USE peachProject
-GO
 
 INSERT INTO LOJA (email, [name], [address], phone, nif) VALUES
 	('AdegaDoAvo@gmail.com','Adega Casal do Av�','R. Direita 55, 2080-329','918393469',753876209),
