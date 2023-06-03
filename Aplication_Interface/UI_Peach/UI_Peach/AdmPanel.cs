@@ -337,7 +337,7 @@ namespace UI_Peach
         {
             if (!verifySGBDConnection())
                 return;
-            SqlCommand cmd = new SqlCommand("getTipoCaixas", conn);
+            SqlCommand cmd = new SqlCommand("getTipoCaixasRes", conn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.Add("@reserva", SqlDbType.Int).Value = res;
             SqlDataReader reader = cmd.ExecuteReader();
