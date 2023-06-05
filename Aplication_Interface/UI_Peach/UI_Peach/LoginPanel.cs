@@ -98,17 +98,29 @@ namespace UI_Peach
         }
         private SqlConnection getSGBDConnection()
         {
-            return new SqlConnection("Data Source = THE_MACHINE\\SQLEXPRESS;" + "Initial Catalog = peachProject; uid = Teste;" + "password = booga");
+            return new SqlConnection("Data Source = tcp:mednat.ieeta.pt\\SQLSERVER, 8101; " + " uid = p5g7; " + "password = Paris1020Java ");
         }
 
+        //private bool verifySGBDConnection()
+        //{
+
+        //    if (conn == null)
+        //        conn = getSGBDConnection();
+
+        //        conn.Open();
+
+        //    return conn.State == ConnectionState.Open;
+        //}
         private bool verifySGBDConnection()
         {
-            if (conn == null)
-                conn = getSGBDConnection();
+           
+                if (conn == null)
+                    conn = getSGBDConnection();
 
                 conn.Open();
 
-            return conn.State == ConnectionState.Open;
+                return conn.State == ConnectionState.Open;
+           
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -130,9 +142,10 @@ namespace UI_Peach
             }
             else
             {
-                storeIdx = Convert.ToInt32(cmd.Parameters["@store"].Value);
-
-                MessageBox.Show(storeIdx.ToString());
+                Hide();
+                int id = Convert.ToInt32(cmd.Parameters["@store"].Value);
+                Client a = new Client(id);
+                a.Show();
             }
 
             conn.Close();

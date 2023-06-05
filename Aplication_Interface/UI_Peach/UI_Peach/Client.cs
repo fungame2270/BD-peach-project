@@ -16,15 +16,12 @@ namespace UI_Peach
         private List<Store> ClientList; // Declaração correta da lista
         private SqlDataAdapter dataAdapter;
 
-
-
         public Client(int storeIdx)
         {
             InitializeComponent();
 
             ClientList = new List<Store>(); // Inicialização da lista
-           
-
+       
             LoadHistorico();
         }
 
@@ -124,8 +121,6 @@ namespace UI_Peach
         }
 
 
-
-
         private void Historic_btn1_Click(object sender, EventArgs e)
         {
             panel1.Visible = true;
@@ -169,220 +164,42 @@ namespace UI_Peach
         {
             return 8; //probelama ao ver qual é o user
         }
-
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-            //remover reserva
-            panel1.Visible = true;
-            panel2.Visible = false;
-            panel3.Visible = false;
-        }
-
-        private void panel2_Paint(object sender, PaintEventArgs e)
-        {
-            //criar  reserva
-            panel1.Visible = false;
-            panel2.Visible = true;
-            panel3.Visible = false;
-        }
-
-        private void button1_Click_2(object sender, EventArgs e)
-        {
-
-            //LoginPanel homepage = new LoginPanel();
-            //homepage.Show();
-            //this.Hide();
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void panel3_Paint(object sender, PaintEventArgs e)
-        {
-            //pag inicial
-            panel3.Visible = true;
-            panel2.Visible = false;
-            panel1.Visible = false;
-
-        }
-
-        private void label8_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
+   
         //aqui em baixo panel de inseir reverva
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-        }
-        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        
-        }
+     
 
-        private void textBox3_TextChanged(object sender, EventArgs e)
-        {
-            // Verifique se o TextBox está vazio
-            if (!string.IsNullOrWhiteSpace(BtnTamanhoP.Text))
-            {
-                // Ação a ser executada quando o texto é alterado
-                string quantidadeKg = BtnTamanhoP.Text;
+     
+        //private void SeuMetodoDeBotao_Click(object sender, EventArgs e)
+        //{
+        //    string conexaoString = "Data Source = tcp:mednat.ieeta.pt\\SQLSERVER,8101;" + " uid = p5g7;" + "password =Paris1020Java ";
 
-                // Faça algo com a quantidade em kg, como salvar em uma variável ou chamar um método
-                // por exemplo: SalvarQuantidadeKg(quantidadeKg);
-            }
-        }
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-       
-        }
+        //   // string conexaoString = "SuaConnectionString"; // Substitua pela string de conexão do seu banco de dados
+        //    string comandoSql = "INSERT INTO RESERVA (RESERVA) VALUES (@data)"; // Substitua pelos valores corretos
 
-        private void SeuMetodoDeBotao_Click(object sender, EventArgs e)
-        {
-            string conexaoString = "Data Source = tcp:mednat.ieeta.pt\\SQLSERVER,8101;" + " uid = p5g7;" + "password =Paris1020Java ";
+        //    using (SqlConnection conexao = new SqlConnection(conexaoString))
+        //    {
+        //        try
+        //        {
+        //            conexao.Open();
 
-           // string conexaoString = "SuaConnectionString"; // Substitua pela string de conexão do seu banco de dados
-            string comandoSql = "INSERT INTO RESERVA (RESERVA) VALUES (@data)"; // Substitua pelos valores corretos
+        //            using (SqlCommand comando = new SqlCommand(comandoSql, conexao))
+        //            {
+        //                comando.Parameters.AddWithValue("@data", TBoxData.Text);
 
-            using (SqlConnection conexao = new SqlConnection(conexaoString))
-            {
-                try
-                {
-                    conexao.Open();
-
-                    using (SqlCommand comando = new SqlCommand(comandoSql, conexao))
-                    {
-                        comando.Parameters.AddWithValue("@data", TBoxData.Text);
-
-                        comando.ExecuteNonQuery();
-                    }
+        //                comando.ExecuteNonQuery();
+        //            }
 
                    
-                }
-                catch (SqlException ex)
-                {
-                    // Lidar com o erro do SQL Server
-                    MessageBox.Show("Erro ao inserir na tabela RESERVA: " + ex.Message);
-                }
-            }
-        }
-
-        private void BtnAddReserva_Click(object sender, EventArgs e)
-        {
-            string nome = BtnName.Text;
-            int quantidade = int.Parse(BtnTamanhoP.Text);
-            DateTime data = DateTime.Parse(TBoxData.Text);
-            string tamanhoP = BtnTamanhoP.Text;
-
-            if (string.IsNullOrWhiteSpace(nome) || string.IsNullOrWhiteSpace(BtnTamanhoP.Text) ||
-         string.IsNullOrWhiteSpace(TBoxData.Text) || string.IsNullOrWhiteSpace(tamanhoP))
-            {
-                MessageBox.Show("Por favor, preencha todos os campos antes de adicionar a reserva.", "Campos vazios",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return; // Sai do método, não prossegue com a inserção
-            }
-            // Aqui você pode adicionar a lógica para inserir esses valores em uma tabela
-            // Por exemplo, usando ADO.NET para trabalhar com um banco de dados, ou qualquer outra forma de armazenamento de dados que esteja usando
-
-            // Exemplo usando ADO.NET com SQL Server:
-            string connectionString = "Data Source = tcp:mednat.ieeta.pt\\SQLSERVER,8101;" + " uid = p5g7;" + "password =Paris1020Java ";
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                string query = "INSERT INTO REVERVA (Nome, Quantidade, Data, TamanhoP) VALUES (@Nome, @Quantidade, @Data, @TamanhoP)";
-                SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@Nome", nome);
-                command.Parameters.AddWithValue("@Quantidade", quantidade);
-                command.Parameters.AddWithValue("@Data", data);
-                command.Parameters.AddWithValue("@TamanhoP", tamanhoP);
-
-                connection.Open();
-                command.ExecuteNonQuery();
-            }
-
-            
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            string selectedOption = BtnTamanhoP.SelectedItem.ToString();
-
-            try
-            {
-                if (!VerifySGBDConnection())
-                    return;
-
-                // Verificar se a opção selecionada é uma das opções desejadas
-                if (selectedOption != "SMALL" && selectedOption != "MEDIUM" && selectedOption != "BIG")
-                {
-                    MessageBox.Show("Opção inválida. Selecione SMALL, MEDIUM ou BIG.");
-                    return;
-                }
-
-                // Consultar o banco de dados para armazenar a opção selecionada
-                string query = "INSERT INTO UserSelection ([Option]) VALUES (@Option)"; //fazer isto aqui
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@Option", selectedOption);
-                    int rowsAffected = cmd.ExecuteNonQuery();
-
-                    if (rowsAffected > 0)
-                    {
-                        MessageBox.Show("Opção armazenada com sucesso no banco de dados.");
-
-                        // Inserir o valor correto na tabela desejada
-                        string insertQuery = "INSERT INTO NomeDaTabela (nomeDaColuna) VALUES (@SelectedOption)";
-                        using (SqlCommand insertCmd = new SqlCommand(insertQuery, conn))
-                        {
-                            insertCmd.Parameters.AddWithValue("@SelectedOption", selectedOption);
-                            int insertRowsAffected = insertCmd.ExecuteNonQuery();
-
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("Falha ao armazenar a opção no banco de dados.");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Erro: " + ex.Message);
-            }
-        }
-
-        private void BtnTamanhoP_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if(BtnTamanhoP.SelectedItem.ToString() == "SMALL")
-            {
-
-            }else if (BtnTamanhoP.SelectedItem.ToString() == "MEDIUM")
-            {
-
-            }else if (BtnTamanhoP.SelectedItem.ToString() == "MEDIUM")
-            {
-
-            }
-            else
-            {
-                MessageBox.Show("Opção inválida. Selecione SMALL, MEDIUM ou BIG.");
-                return;
-            }
-
-          
-        }
+        //        }
+        //        catch (SqlException ex)
+        //        {
+        //            // Lidar com o erro do SQL Server
+        //            MessageBox.Show("Erro ao inserir na tabela RESERVA: " + ex.Message);
+        //        }
+        //    }
+        //}
+   
         //panbel de revover reserva aqui em baixo
-
-
         private void Criar_rev_btn2_Click(object sender, EventArgs e)
         {
             panel2.Visible = true;
@@ -418,26 +235,7 @@ namespace UI_Peach
                 {
                     MessageBox.Show("Error: " + ex.Message);
                 }
-                //try
-                //{
-                //    connection.Open();
-                //    string query = "SELECT size FROM TIPODECAIXA";
-                //    SqlCommand command = new SqlCommand(query, connection);
-                //    SqlDataReader reader = command.ExecuteReader();
-                //    while (reader.Read())
-                //    {
-                //        string medicoName = reader["size"].ToString();
-                //        BtnTamanhoP.Items.Add(medicoName);
-                //    }
-                //    reader.Close();
-                //    connection.Close();
-                //}
-                //catch (Exception ex)
-                //{
-                //    MessageBox.Show("Error: " + ex.Message);
-                //}
-
-
+          
                 try
                 {
                     // Create a new instance of the SqlDataAdapter
@@ -455,7 +253,7 @@ namespace UI_Peach
                     dataAdapter.Fill(dataTable);
 
                     // Set the DataTable as the data source for the DataGridView
-                    dataGridView3.DataSource = dataTable;
+                    dataGridView1.DataSource = dataTable;
                 }
                 catch (Exception ex)
                 {
@@ -539,10 +337,7 @@ namespace UI_Peach
             }
         }
 
-        private void TxB_Id_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+  
 
         private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -597,10 +392,7 @@ namespace UI_Peach
                 }
             }
         }
-    private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-           
-        }
+   
 
         private void BtnTamanhoP_SelectedIndexChanged_1(object sender, EventArgs e)
         {
@@ -609,19 +401,110 @@ namespace UI_Peach
 
         private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
         {
+            string selectedOption = BtnTamanhoP.SelectedItem.ToString();
 
+            try
+            {
+                if (!VerifySGBDConnection())
+                    return;
+
+                // Verificar se a opção selecionada é uma das opções desejadas
+                if (selectedOption != "SMALL" && selectedOption != "MEDIUM" && selectedOption != "BIG")
+                {
+                    MessageBox.Show("Opção inválida. Selecione SMALL, MEDIUM ou BIG.");
+                    return;
+                }
+
+                // Consultar o banco de dados para armazenar a opção selecionada
+                string query = "INSERT INTO UserSelection ([Option]) VALUES (@Option)"; //fazer isto aqui
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Option", selectedOption);
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    if (rowsAffected > 0)
+                    {
+                        MessageBox.Show("Opção armazenada com sucesso no banco de dados.");
+
+                        // Inserir o valor correto na tabela desejada
+                        string insertQuery = "INSERT INTO NomeDaTabela (nomeDaColuna) VALUES (@SelectedOption)";
+                        using (SqlCommand insertCmd = new SqlCommand(insertQuery, conn))
+                        {
+                            insertCmd.Parameters.AddWithValue("@SelectedOption", selectedOption);
+                            int insertRowsAffected = insertCmd.ExecuteNonQuery();
+
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Falha ao armazenar a opção no banco de dados.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro: " + ex.Message);
+            }
         }
 
         private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
         {
 
         }
-
+        //botao de login voltar
         private void button3_Click(object sender, EventArgs e)
         {
             LoginPanel homepage = new LoginPanel();
             homepage.Show();
             this.Hide();
+        }
+
+        private void Btn_r_reserva_Click(object sender, EventArgs e)
+        {
+            int reservaId;
+            if (int.TryParse(TxB_Id.Text, out reservaId))
+            {
+                try
+                {
+                    string connectionString = "Data Source=tcp:mednat.ieeta.pt\\SQLSERVER,8101;User ID=p5g7;Password=Paris1020Java";
+                    string query = "DELETE FROM RESERVA WHERE id = @ReservaId";
+
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@ReservaId", reservaId);
+                            command.ExecuteNonQuery();
+                        }
+                    }
+
+                    MessageBox.Show("Reserva removida com sucesso!");
+
+                    // Atualizar o DataGridView2 com as reservas atualizadas
+                    dataGridView2_CellContentClick();
+
+                }
+                catch (SqlException ex)
+                {
+                    //MessageBox.Show("Ocorreu um erro ao tentar remover a reserva: " + ex.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("ID de reserva inválido!");
+            }
+        }
+
+        private void Btn_c_reserva_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TBoxData_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 
