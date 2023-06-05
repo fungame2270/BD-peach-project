@@ -47,6 +47,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caixa.cs" />
+    <Compile Include="Variadade.cs" />
+    <Compile Include="TipoCaixa.cs" />
+    <Compile Include="Reservation.cs" />
     <Compile Include="Client.cs">
       <SubType>Form</SubType>
     </Compile>

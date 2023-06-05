@@ -98,7 +98,7 @@ namespace UI_Peach
         }
         private SqlConnection getSGBDConnection()
         {
-            return new SqlConnection("Data Source = tcp:mednat.ieeta.pt\\SQLSERVER,8101;" + " uid = p5g7;" + "password =Paris1020Java ");
+            return new SqlConnection("Data Source = THE_MACHINE\\SQLEXPRESS;" + "Initial Catalog = peachProject; uid = Teste;" + "password = booga");
         }
 
         private bool verifySGBDConnection()
