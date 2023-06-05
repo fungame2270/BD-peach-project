@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace UI_Peach
@@ -10,29 +12,23 @@ namespace UI_Peach
     {
         private SqlConnection conn;
         private int CurrentStore;
-        private int CurrentSale;
         private DataTable dataTable;
-        private DataTable dataTable1;
         private List<Store> ClientList; // Declaração correta da lista
         private SqlDataAdapter dataAdapter;
+
+
 
         public Client(int storeIdx)
         {
             InitializeComponent();
 
             ClientList = new List<Store>(); // Inicialização da lista
+           
 
             LoadHistorico();
         }
 
-        public Client()
-        {
-            InitializeComponent();
 
-            ClientList = new List<Store>(); // Inicialização da lista
-
-            LoadHistorico();
-        }
 
         private SqlConnection GetSGBDConnection()
         {
@@ -95,6 +91,8 @@ namespace UI_Peach
             panel2.Visible = false;
             panel3.Visible = false;
 
+            int storeId = GetStoreIdForCurrentUser(); // Replace this with your actual logic to retrieve the store ID for the current user
+
             string connectionString = "Data Source = tcp:mednat.ieeta.pt\\SQLSERVER,8101;" + " uid = p5g7;" + "password =Paris1020Java ";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -105,8 +103,9 @@ namespace UI_Peach
                     dataAdapter = new SqlDataAdapter();
 
                     // Set the SelectCommand to the stored procedure
-                    dataAdapter.SelectCommand = new SqlCommand("reservastodas", connection);
+                    dataAdapter.SelectCommand = new SqlCommand("help_me", connection);
                     dataAdapter.SelectCommand.CommandType = CommandType.StoredProcedure;
+                    dataAdapter.SelectCommand.Parameters.AddWithValue("@store", storeId);
 
                     // Create a new DataTable
                     dataTable = new DataTable();
@@ -120,17 +119,21 @@ namespace UI_Peach
                 catch (Exception ex)
                 {
                     MessageBox.Show("Error: " + ex.Message);
-
                 }
             }
         }
 
-      
+
+
+
         private void Historic_btn1_Click(object sender, EventArgs e)
         {
             panel1.Visible = false;
             panel2.Visible = false;
             panel3.Visible = true;
+
+            // Get the store ID of the currently logged-in user
+            int storeId = GetStoreIdForCurrentUser(); // Replace this with your actual logic to retrieve the store ID for the current user
 
             string connectionString = "Data Source = tcp:mednat.ieeta.pt\\SQLSERVER,8101;" + " uid = p5g7;" + "password =Paris1020Java ";
 
@@ -142,8 +145,9 @@ namespace UI_Peach
                     dataAdapter = new SqlDataAdapter();
 
                     // Set the SelectCommand to the stored procedure
-                    dataAdapter.SelectCommand = new SqlCommand("spLoja", connection);
+                    dataAdapter.SelectCommand = new SqlCommand("help_me", connection);
                     dataAdapter.SelectCommand.CommandType = CommandType.StoredProcedure;
+                    dataAdapter.SelectCommand.Parameters.AddWithValue("@store", storeId);
 
                     // Create a new DataTable
                     dataTable = new DataTable();
@@ -159,8 +163,13 @@ namespace UI_Peach
                     MessageBox.Show("Error: " + ex.Message);
                 }
             }
-
         }
+
+        private int GetStoreIdForCurrentUser()
+        {
+            return 8; //probelama ao ver qual é o user
+        }
+
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
@@ -211,154 +220,23 @@ namespace UI_Peach
 
         }
 
-       
+
         //aqui em baixo panel de inseir reverva
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == dataGridView1.Columns["VerDetalhes"].Index && e.RowIndex >= 0)
-            {
-                int vendaId = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells["VendaId"].Value);
-
-                // Chame a stored procedure "getCaixasOfSale" para obter os dados
-                using (SqlConnection connection = new SqlConnection("ConnectionString"))
-                {
-                    connection.Open();
-
-                    SqlCommand command = new SqlCommand("getCaixasOfSale", connection);
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@venda", vendaId);
-
-                    SqlDataAdapter adapter = new SqlDataAdapter(command);
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
-
-                    // Popule o DataGridView com os dados retornados
-                    dataGridView1.DataSource = dataTable;
-                }
-            }
-
         }
-
-        //private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-
-        //    SELECT[name] FROM peachProject.LOJA;
-
-
-        //}
-        //private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    string connectionString = "Data Source = tcp:mednat.ieeta.pt\\SQLSERVER,8101;" + " uid = p5g7;" + "password =Paris1020Java";
-
-        //    using (SqlConnection connection = new SqlConnection(connectionString))
-        //    {
-        //        try
-        //        {
-        //            connection.Open();
-
-        //            string sql = "SELECT [name] FROM peachProject.LOJA";
-
-        //            using (SqlCommand command = new SqlCommand(sql, connection))
-        //            {
-        //                SqlDataReader reader = command.ExecuteReader();
-
-        //                List<string> storeNames = new List<string>();
-
-        //                while (reader.Read())
-        //                {
-        //                    string name = reader["name"].ToString();
-        //                    storeNames.Add(name);
-        //                }
-
-        //                dataGridView3.DataSource = storeNames;
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            MessageBox.Show("Error: " + ex.Message);
-        //        }
-        //    }
-        //}
-        //private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    string connectionString = "Data Source = tcp:mednat.ieeta.pt\\SQLSERVER,8101;" + " uid = p5g7;" + "password =Paris1020Java";
-
-        //    using (SqlConnection connection = new SqlConnection(connectionString))
-        //    {
-        //        try
-        //        {
-        //            connection.Open();
-
-        //            string sql = "SELECT [name] FROM peachProject.LOJA";
-
-        //            using (SqlCommand command = new SqlCommand(sql, connection))
-        //            {
-        //                SqlDataReader reader = command.ExecuteReader();
-
-        //                comboBox1.Items.Clear(); // Limpa os itens existentes no comboBox1
-
-        //                while (reader.Read())
-        //                {
-        //                    string name = reader["name"].ToString();
-        //                    comboBox1.Items.Add(name); // Adiciona o nome da loja ao comboBox1
-        //                }
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            MessageBox.Show("Error: " + ex.Message);
-        //        }
-        //    }
-
-        //}
-        private async void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string connectionString = "Data Source = tcp:mednat.ieeta.pt\\SQLSERVER,8101;" + " uid = p5g7;" + "password =Paris1020Java";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    await connection.OpenAsync();
-
-                    string sql = "SELECT [name] FROM peachProject.LOJA";
-
-                    using (SqlCommand command = new SqlCommand(sql, connection))
-                    {
-                        SqlDataReader reader = await command.ExecuteReaderAsync();
-
-                        List<string> storeNames = new List<string>();
-
-                        while (await reader.ReadAsync())
-                        {
-                            string name = reader["name"].ToString();
-                            storeNames.Add(name);
-                        }
-
-                        comboBox1.BeginInvoke(new Action(() =>
-                        {
-                            comboBox1.Items.Clear(); // Limpa os itens existentes no comboBox1
-                            comboBox1.Items.AddRange(storeNames.ToArray()); // Adiciona os nomes das lojas ao comboBox1
-                        }));
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error: " + ex.Message);
-                }
-            }
+        
         }
-
-
-
 
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
             // Verifique se o TextBox está vazio
-            if (!string.IsNullOrWhiteSpace(textBox3.Text))
+            if (!string.IsNullOrWhiteSpace(TBoxquantidade.Text))
             {
                 // Ação a ser executada quando o texto é alterado
-                string quantidadeKg = textBox3.Text;
+                string quantidadeKg = TBoxquantidade.Text;
 
                 // Faça algo com a quantidade em kg, como salvar em uma variável ou chamar um método
                 // por exemplo: SalvarQuantidadeKg(quantidadeKg);
@@ -366,19 +244,14 @@ namespace UI_Peach
         }
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
-            // Verifique se o TextBox está vazio
-            if (!string.IsNullOrWhiteSpace(textBox2.Text))
-            {
-                // Ação a ser executada quando o texto é alterado
-                string data = textBox2.Text;
-
-                // Faça algo com a data, como salvar em uma variável ou chamar um método
-                // por exemplo: SalvarData(data);
-            }
+       
         }
+
         private void SeuMetodoDeBotao_Click(object sender, EventArgs e)
         {
-            string conexaoString = "SuaConnectionString"; // Substitua pela string de conexão do seu banco de dados
+            string conexaoString = "Data Source = tcp:mednat.ieeta.pt\\SQLSERVER,8101;" + " uid = p5g7;" + "password =Paris1020Java ";
+
+           // string conexaoString = "SuaConnectionString"; // Substitua pela string de conexão do seu banco de dados
             string comandoSql = "INSERT INTO RESERVA (RESERVA) VALUES (@data)"; // Substitua pelos valores corretos
 
             using (SqlConnection conexao = new SqlConnection(conexaoString))
@@ -389,13 +262,12 @@ namespace UI_Peach
 
                     using (SqlCommand comando = new SqlCommand(comandoSql, conexao))
                     {
-                        comando.Parameters.AddWithValue("@data", textBox2.Text);
+                        comando.Parameters.AddWithValue("@data", TBoxData.Text);
 
                         comando.ExecuteNonQuery();
                     }
 
-                    // Ação a ser executada após a inserção bem-sucedida
-                    // por exemplo: MessageBox.Show("Inserção bem-sucedida!");
+                   
                 }
                 catch (SqlException ex)
                 {
@@ -407,91 +279,40 @@ namespace UI_Peach
 
         private void BtnAddReserva_Click(object sender, EventArgs e)
         {
-            int reservaId;
-            if (int.TryParse(TxB_Id.Text, out reservaId))
+            string nome = BtnName.Text;
+            int quantidade = int.Parse(TBoxquantidade.Text);
+            DateTime data = DateTime.Parse(TBoxData.Text);
+            string tamanhoP = BtnTamanhoP.Text;
+
+            if (string.IsNullOrWhiteSpace(nome) || string.IsNullOrWhiteSpace(TBoxquantidade.Text) ||
+         string.IsNullOrWhiteSpace(TBoxData.Text) || string.IsNullOrWhiteSpace(tamanhoP))
             {
-                // Verifique se os campos foram preenchidos corretamente
-                if (string.IsNullOrWhiteSpace(comboBox1.Text) || string.IsNullOrWhiteSpace(textBox2.Text) || string.IsNullOrWhiteSpace(textBox3.Text) || string.IsNullOrWhiteSpace(BtnTamanhoP.Text))
-                {
-                    MessageBox.Show("Preencha todos os campos corretamente.");
-                    return;
-                }
-
-                string tamanho = BtnTamanhoP.Text;
-                string nomeLoja = textBox2.Text;
-                string data = textBox3.Text;
-                int quantidade;
-
-                if (!int.TryParse(comboBox1.Text, out quantidade))
-                {
-                    MessageBox.Show("Quantidade inválida. Insira um valor numérico válido.");
-                    return;
-                }
-
-                try
-                {
-                    if (!VerifySGBDConnection())
-                        return;
-
-                    // Obtenha o ID da loja com base no nome da loja
-                    string queryLoja = "SELECT id FROM peachProject.LOJA WHERE [name] = @NomeLoja";
-                    SqlCommand cmdLoja = new SqlCommand(queryLoja, conn);
-                    cmdLoja.Parameters.AddWithValue("@NomeLoja", nomeLoja);
-
-                    object resultLoja = cmdLoja.ExecuteScalar();
-                    if (resultLoja != null && int.TryParse(resultLoja.ToString(), out int lojaId))
-                    {
-                        // Insira os dados da reserva no banco de dados
-                        string queryReserva = "INSERT INTO peachProject.RESERVA (id, [date], store) VALUES (@ReservaId, @Data, @LojaId)";
-                        SqlCommand cmdReserva = new SqlCommand(queryReserva, conn);
-                        cmdReserva.Parameters.AddWithValue("@ReservaId", reservaId);
-                        cmdReserva.Parameters.AddWithValue("@Data", data);
-                        cmdReserva.Parameters.AddWithValue("@LojaId", lojaId);
-
-                        int rowsAffectedReserva = cmdReserva.ExecuteNonQuery();
-
-                        if (rowsAffectedReserva > 0)
-                        {
-                            // Obter o ID da reserva inserida
-                            string queryReservaId = "SELECT SCOPE_IDENTITY()";
-                            SqlCommand cmdReservaId = new SqlCommand(queryReservaId, conn);
-                            int novaReservaId = Convert.ToInt32(cmdReservaId.ExecuteScalar());
-
-                            // Inserir os dados da reserva na tabela TIPOCAIXARESERVA
-                            string queryTipoCaixaReserva = "INSERT INTO peachProject.TIPOCAIXARESERVA (reservation, code, size, quantity) VALUES (@ReservaId, @Code, @Size, @Quantity)";
-                            SqlCommand cmdTipoCaixaReserva = new SqlCommand(queryTipoCaixaReserva, conn);
-                            cmdTipoCaixaReserva.Parameters.AddWithValue("@ReservaId", novaReservaId);
-                            cmdTipoCaixaReserva.Parameters.AddWithValue("@Code", 1); // Substitua pelos valores desejados
-                            cmdTipoCaixaReserva.Parameters.AddWithValue("@Size", tamanho);
-                            cmdTipoCaixaReserva.Parameters.AddWithValue("@Quantity", quantidade);
-
-                            int rowsAffectedTipoCaixaReserva = cmdTipoCaixaReserva.ExecuteNonQuery();
-
-                            if (rowsAffectedTipoCaixaReserva > 0)
-                            {
-                                MessageBox.Show("Reserva adicionada com sucesso.");
-                                // Faça qualquer outra ação necessária após adicionar a reserva
-                            }
-                            else
-                            {
-                                MessageBox.Show("Falha ao adicionar reserva.");
-                            }
-                        }
-                        else
-                        {
-                            MessageBox.Show("Falha ao adicionar reserva.");
-                        }
-
-                    }
-                }
-                catch { }
+                MessageBox.Show("Por favor, preencha todos os campos antes de adicionar a reserva.", "Campos vazios",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Sai do método, não prossegue com a inserção
             }
+            // Aqui você pode adicionar a lógica para inserir esses valores em uma tabela
+            // Por exemplo, usando ADO.NET para trabalhar com um banco de dados, ou qualquer outra forma de armazenamento de dados que esteja usando
+
+            // Exemplo usando ADO.NET com SQL Server:
+            string connectionString = "Data Source = tcp:mednat.ieeta.pt\\SQLSERVER,8101;" + " uid = p5g7;" + "password =Paris1020Java ";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "INSERT INTO REVERVA (Nome, Quantidade, Data, TamanhoP) VALUES (@Nome, @Quantidade, @Data, @TamanhoP)";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Nome", nome);
+                command.Parameters.AddWithValue("@Quantidade", quantidade);
+                command.Parameters.AddWithValue("@Data", data);
+                command.Parameters.AddWithValue("@TamanhoP", tamanhoP);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+
+            
         }
 
-
-
-
-        private void BtnTamanhoP_SelectedIndexChanged(object sender, EventArgs e)
+        private void textBox1_TextChanged(object sender, EventArgs e)
         {
             string selectedOption = BtnTamanhoP.SelectedItem.ToString();
 
@@ -500,21 +321,37 @@ namespace UI_Peach
                 if (!VerifySGBDConnection())
                     return;
 
+                // Verificar se a opção selecionada é uma das opções desejadas
+                if (selectedOption != "SMALL" && selectedOption != "MEDIUM" && selectedOption != "BIG")
+                {
+                    MessageBox.Show("Opção inválida. Selecione SMALL, MEDIUM ou BIG.");
+                    return;
+                }
+
                 // Consultar o banco de dados para armazenar a opção selecionada
-                string query = "INSERT INTO UserSelection ([Option]) VALUES (@Option)";
+                string query = "INSERT INTO UserSelection ([Option]) VALUES (@Option)"; //fazer isto aqui
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@Option", selectedOption);
                     int rowsAffected = cmd.ExecuteNonQuery();
 
-                    //if (rowsAffected > 0)
-                    //{
-                    //    MessageBox.Show("Opção armazenada com sucesso no banco de dados.");
-                    //}
-                    //else
-                    //{
-                    //    MessageBox.Show("Falha ao armazenar a opção no banco de dados.");
-                    //}
+                    if (rowsAffected > 0)
+                    {
+                        MessageBox.Show("Opção armazenada com sucesso no banco de dados.");
+
+                        // Inserir o valor correto na tabela desejada
+                        string insertQuery = "INSERT INTO NomeDaTabela (nomeDaColuna) VALUES (@SelectedOption)";
+                        using (SqlCommand insertCmd = new SqlCommand(insertQuery, conn))
+                        {
+                            insertCmd.Parameters.AddWithValue("@SelectedOption", selectedOption);
+                            int insertRowsAffected = insertCmd.ExecuteNonQuery();
+
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Falha ao armazenar a opção no banco de dados.");
+                    }
                 }
             }
             catch (Exception ex)
@@ -523,8 +360,26 @@ namespace UI_Peach
             }
         }
 
+        private void BtnTamanhoP_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(BtnTamanhoP.SelectedItem.ToString() == "SMALL")
+            {
 
+            }else if (BtnTamanhoP.SelectedItem.ToString() == "MEDIUM")
+            {
 
+            }else if (BtnTamanhoP.SelectedItem.ToString() == "MEDIUM")
+            {
+
+            }
+            else
+            {
+                MessageBox.Show("Opção inválida. Selecione SMALL, MEDIUM ou BIG.");
+                return;
+            }
+
+          
+        }
         //panbel de revover reserva aqui em baixo
 
 
@@ -534,18 +389,64 @@ namespace UI_Peach
             panel1.Visible = false;
             panel3.Visible = false;
 
+            
+            
+            int storeId = GetStoreIdForCurrentUser(); // Replace this with your actual logic to retrieve the store ID for the current user
+
             string connectionString = "Data Source = tcp:mednat.ieeta.pt\\SQLSERVER,8101;" + " uid = p5g7;" + "password =Paris1020Java ";
 
+            BtnName.Items.Clear();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
+
+
+                try
+                {
+                    connection.Open();
+                    string query = "SELECT [name] FROM LOJA";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    SqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        string medicoName = reader["name"].ToString();
+                        BtnName.Items.Add(medicoName);
+                    }
+                    reader.Close();
+                    connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+                //try
+                //{
+                //    connection.Open();
+                //    string query = "SELECT size FROM TIPODECAIXA";
+                //    SqlCommand command = new SqlCommand(query, connection);
+                //    SqlDataReader reader = command.ExecuteReader();
+                //    while (reader.Read())
+                //    {
+                //        string medicoName = reader["size"].ToString();
+                //        BtnTamanhoP.Items.Add(medicoName);
+                //    }
+                //    reader.Close();
+                //    connection.Close();
+                //}
+                //catch (Exception ex)
+                //{
+                //    MessageBox.Show("Error: " + ex.Message);
+                //}
+
+
                 try
                 {
                     // Create a new instance of the SqlDataAdapter
                     dataAdapter = new SqlDataAdapter();
 
                     // Set the SelectCommand to the stored procedure
-                    dataAdapter.SelectCommand = new SqlCommand("reservastodas", connection);
+                    dataAdapter.SelectCommand = new SqlCommand("help_me", connection);
                     dataAdapter.SelectCommand.CommandType = CommandType.StoredProcedure;
+                    dataAdapter.SelectCommand.Parameters.AddWithValue("@store", storeId);
 
                     // Create a new DataTable
                     dataTable = new DataTable();
@@ -565,50 +466,75 @@ namespace UI_Peach
 
         }
 
-
         private void Btn_R_Reversa_Click(object sender, EventArgs e)
         {
-            
-
             int reservaId;
             if (int.TryParse(TxB_Id.Text, out reservaId))
             {
-                string query = "DELETE FROM peachProject.RESERVA WHERE id = @ReservaId";
-                using (SqlConnection connection = new SqlConnection("Data Source = tcp:mednat.ieeta.pt\\SQLSERVER,8101; " + " uid = p5g7; " + "password = Paris1020Java "))
+                try
                 {
-                    connection.Open();
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    string connectionString = "Data Source=tcp:mednat.ieeta.pt\\SQLSERVER,8101;User ID=p5g7;Password=Paris1020Java";
+                    string query = "DELETE FROM RESERVA WHERE id = @ReservaId";
+
+                    using (SqlConnection connection = new SqlConnection(connectionString))
                     {
-                        command.Parameters.AddWithValue("@ReservaId", reservaId);
-                        command.ExecuteNonQuery();
+                        connection.Open();
+
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@ReservaId", reservaId);
+                            command.ExecuteNonQuery();
+                        }
                     }
+
+                    MessageBox.Show("Reserva removida com sucesso!");
+
+                    // Atualizar o DataGridView2 com as reservas atualizadas
+                    dataGridView2_CellContentClick();
+
                 }
-                MessageBox.Show("Reserva removida com sucesso!");
-                // Atualizar o DataGridView2 com as reservas atualizadas
-                dataGridView2_CellContentClick();
+                catch (SqlException ex)
+                {
+                    //MessageBox.Show("Ocorreu um erro ao tentar remover a reserva: " + ex.Message);
+                }
             }
             else
             {
                 MessageBox.Show("ID de reserva inválido!");
             }
-
-         
         }
+
 
         private void dataGridView2_CellContentClick()
         {
-            ;
-            string query = "SELECT * FROM peachProject.Reservas";
+            int storeId = GetStoreIdForCurrentUser(); // Replace this with your actual logic to retrieve the store ID for the current user
 
-            using (SqlConnection connection = new SqlConnection("Data Source = tcp:mednat.ieeta.pt\\SQLSERVER,8101; " + " uid = p5g7; " + "password = Paris1020Java "))
+            string connectionString = "Data Source = tcp:mednat.ieeta.pt\\SQLSERVER,8101;" + " uid = p5g7;" + "password =Paris1020Java ";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                connection.Open();
-                using (SqlCommand command = new SqlCommand(query, connection))
+                try
                 {
-                    SqlDataAdapter adapter = new SqlDataAdapter(command);
-                    DataTable dataTable1 = new DataTable();
-                    adapter.Fill(dataTable1);
-                    dataGridView2.DataSource = dataTable1;
+                    // Create a new instance of the SqlDataAdapter
+                    dataAdapter = new SqlDataAdapter();
+
+                    // Set the SelectCommand to the stored procedure
+                    dataAdapter.SelectCommand = new SqlCommand("help_me", connection);
+                    dataAdapter.SelectCommand.CommandType = CommandType.StoredProcedure;
+                    dataAdapter.SelectCommand.Parameters.AddWithValue("@store", storeId);
+
+                    // Create a new DataTable
+                    dataTable = new DataTable();
+
+                    // Fill the DataTable with the data from the stored procedure
+                    dataAdapter.Fill(dataTable);
+
+                    // Set the DataTable as the data source for the DataGridView
+                    dataGridView2.DataSource = dataTable;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
                 }
             }
         }
@@ -645,15 +571,38 @@ namespace UI_Peach
 
 
         }
-
-        private void dataGridView3_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
         private void dataGridView3_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.ColumnIndex == dataGridView1.Columns["VerDetalhes"].Index && e.RowIndex >= 0)
+            {
+                int vendaId = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells["VendaId"].Value);
 
+                // Call the stored procedure "getCaixasOfSale" to retrieve the data
+                string connectionString = "Data Source = tcp:mednat.ieeta.pt\\SQLSERVER,8101;" + " uid = p5g7;" + "password =Paris1020Java ";
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand("getCaixasOfSale", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@venda", vendaId);
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+
+                    // Populate the DataGridView with the returned data
+                    dataGridView2.DataSource = dataTable;
+                }
+            }
         }
+    private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+           
+        }
+
+      
     }
+
 }
