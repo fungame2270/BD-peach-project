@@ -166,3 +166,94 @@ go
 CREATE PROC getFito
 AS
 SELECT * FROM FITOFARMACEUTICOS
+
+
+---------------------
+
+ALTER PROCEDURE InsertIntoTabela
+    @id INT,
+    @size VARCHAR(50),
+    @quantidade INT,
+    @storeName VARCHAR(50)
+AS
+BEGIN
+    INSERT INTO TIPOCAIXARESERVA (id, size, quantidade, storeName)
+    VALUES (@id, @size, @quantidade, @storeName)
+END
+
+ALTER PROCEDURE help_me
+    @store INT
+AS
+BEGIN
+    IF @store IS NULL
+    BEGIN
+        PRINT 'Store ID not provided';
+        RETURN;
+    END
+    BEGIN
+         SELECT R.id, R.[date], R.store,TR.code, TR.size, TR.quantity --TR.code,
+		FROM RESERVA AS R
+		JOIN TIPOCAIXARESERVA AS TR ON R.store = TR.code
+		WHERE R.store = @store;
+    END
+    
+    
+END
+exec help_me @store=8
+
+CREATE TRIGGER VerificarForData
+ON TIPOCAIXARESERVA -- Substitua "NomeDaTabela" pelo nome da tabela que deseja verificar
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    -- Verificar a coluna de data na tabela inserida
+    IF EXISTS (
+        SELECT 1
+        FROM inserted
+        WHERE TBoxData IS NULL OR NOT TBoxData LIKE '[0-9][0-9] / [0-9][0-9] / [0-9][0-9][0-9][0-9]'
+    )
+    BEGIN
+        -- Lançar um erro se a data não estiver no formato desejado
+        RAISERROR ('A data deve estar no formato "número número / número número / número número número número".', 16, 1)
+        ROLLBACK TRANSACTION
+        RETURN
+    END
+END
+
+
+
+Alter PROCEDURE GetStoreNames
+AS
+BEGIN
+    SELECT [name],id FROM LOJA;
+END
+
+CREATE PROCEDURE DeleteReserva
+    @ReservaId INT
+AS
+BEGIN
+    DELETE FROM RESERVA WHERE id = @ReservaId;
+END
+
+CREATE PROCEDURE InsertReservation
+    @reservationDate DATE,
+    @storeId INT,
+    @code INT,
+    @size VARCHAR(6),
+    @quantity INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Inserir na tabela peachProject.RESERVA
+    INSERT INTO RESERVA ([date], store)
+    VALUES (@reservationDate, @storeId);
+
+    -- Inserir na tabela peachProject.TIPOCAIXARESERVA
+    INSERT INTO TIPOCAIXARESERVA (code, size, quantity)
+    VALUES (@code, @size, @quantity);
+END
+
+
+DROP PROCEDURE IF EXISTS InsertReservation;
+
