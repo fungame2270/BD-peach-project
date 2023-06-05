@@ -144,8 +144,10 @@ namespace UI_Peach
             {
                 Hide();
                 int id = Convert.ToInt32(cmd.Parameters["@store"].Value);
-                Client a = new Client(id);
-                a.Show();
+
+                Client stPanel = new Client(id);
+                stPanel.Show();
+
             }
 
             conn.Close();

@@ -1,5 +1,4 @@
-﻿
-namespace UI_Peach
+﻿namespace UI_Peach
 {
     partial class Client
     {
@@ -36,6 +35,7 @@ namespace UI_Peach
             this.hs = new System.Windows.Forms.Label();
             this.dataGridView3 = new System.Windows.Forms.DataGridView();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.Btn_c_reserva = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.BtnName = new System.Windows.Forms.ComboBox();
@@ -48,12 +48,11 @@ namespace UI_Peach
             this.label1 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.Btn_r_reserva = new System.Windows.Forms.Button();
             this.TxB_Id = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.button3 = new System.Windows.Forms.Button();
-            this.Btn_r_reserva = new System.Windows.Forms.Button();
-            this.Btn_c_reserva = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             this.panel2.SuspendLayout();
@@ -96,7 +95,7 @@ namespace UI_Peach
             // 
             this.panel1.Controls.Add(this.hs);
             this.panel1.Controls.Add(this.dataGridView3);
-            this.panel1.Location = new System.Drawing.Point(44, 124);
+            this.panel1.Location = new System.Drawing.Point(49, 167);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1118, 531);
             this.panel1.TabIndex = 5;
@@ -134,10 +133,20 @@ namespace UI_Peach
             this.panel2.Controls.Add(this.textBox1);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.dataGridView1);
-            this.panel2.Location = new System.Drawing.Point(32, 139);
+            this.panel2.Location = new System.Drawing.Point(21, 191);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1305, 556);
             this.panel2.TabIndex = 6;
+            // 
+            // Btn_c_reserva
+            // 
+            this.Btn_c_reserva.Location = new System.Drawing.Point(1055, 458);
+            this.Btn_c_reserva.Name = "Btn_c_reserva";
+            this.Btn_c_reserva.Size = new System.Drawing.Size(152, 40);
+            this.Btn_c_reserva.TabIndex = 12;
+            this.Btn_c_reserva.Text = "Criar Reserva";
+            this.Btn_c_reserva.UseVisualStyleBackColor = true;
+            this.Btn_c_reserva.Click += new System.EventHandler(this.Btn_c_reserva_Click);
             // 
             // label7
             // 
@@ -244,10 +253,20 @@ namespace UI_Peach
             this.panel3.Controls.Add(this.TxB_Id);
             this.panel3.Controls.Add(this.label2);
             this.panel3.Controls.Add(this.dataGridView2);
-            this.panel3.Location = new System.Drawing.Point(32, 727);
+            this.panel3.Location = new System.Drawing.Point(31, 179);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1354, 630);
             this.panel3.TabIndex = 7;
+            // 
+            // Btn_r_reserva
+            // 
+            this.Btn_r_reserva.Location = new System.Drawing.Point(1054, 264);
+            this.Btn_r_reserva.Name = "Btn_r_reserva";
+            this.Btn_r_reserva.Size = new System.Drawing.Size(180, 37);
+            this.Btn_r_reserva.TabIndex = 4;
+            this.Btn_r_reserva.Text = "Remover Reserva";
+            this.Btn_r_reserva.UseVisualStyleBackColor = true;
+            this.Btn_r_reserva.Click += new System.EventHandler(this.Btn_r_reserva_Click);
             // 
             // TxB_Id
             // 
@@ -284,26 +303,6 @@ namespace UI_Peach
             this.button3.Text = "Login";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // Btn_r_reserva
-            // 
-            this.Btn_r_reserva.Location = new System.Drawing.Point(1054, 264);
-            this.Btn_r_reserva.Name = "Btn_r_reserva";
-            this.Btn_r_reserva.Size = new System.Drawing.Size(180, 37);
-            this.Btn_r_reserva.TabIndex = 4;
-            this.Btn_r_reserva.Text = "Remover Reserva";
-            this.Btn_r_reserva.UseVisualStyleBackColor = true;
-            this.Btn_r_reserva.Click += new System.EventHandler(this.Btn_r_reserva_Click);
-            // 
-            // Btn_c_reserva
-            // 
-            this.Btn_c_reserva.Location = new System.Drawing.Point(1055, 458);
-            this.Btn_c_reserva.Name = "Btn_c_reserva";
-            this.Btn_c_reserva.Size = new System.Drawing.Size(152, 40);
-            this.Btn_c_reserva.TabIndex = 12;
-            this.Btn_c_reserva.Text = "Criar Reserva";
-            this.Btn_c_reserva.UseVisualStyleBackColor = true;
-            this.Btn_c_reserva.Click += new System.EventHandler(this.Btn_c_reserva_Click);
             // 
             // Client
             // 
