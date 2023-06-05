@@ -388,7 +388,7 @@ namespace UI_Peach
                 }
                 catch (SqlException ex)
                 {
-                    //MessageBox.Show("Ocorreu um erro ao tentar remover a reserva: " + ex.Message);
+                    MessageBox.Show("Ocorreu um erro ao tentar remover a reserva: " + ex.Message);
                 }
 
             }
