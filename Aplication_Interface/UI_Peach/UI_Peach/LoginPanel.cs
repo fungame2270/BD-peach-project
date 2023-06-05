@@ -130,9 +130,10 @@ namespace UI_Peach
             }
             else
             {
-                storeIdx = Convert.ToInt32(cmd.Parameters["@store"].Value);
-
-                MessageBox.Show(storeIdx.ToString());
+                Hide();
+                int id = Convert.ToInt32(cmd.Parameters["@store"].Value);
+                Client stPanel = new Client(id);
+                stPanel.Show();
             }
 
             conn.Close();
