@@ -87,9 +87,9 @@ namespace UI_Peach
 
         private void button2_Click(object sender, EventArgs e)
         {
-            panel1.Visible = true;
+            panel1.Visible = false;
             panel2.Visible = false;
-            panel3.Visible = false;
+            panel3.Visible = true;
 
             int storeId = GetStoreIdForCurrentUser(); // Replace this with your actual logic to retrieve the store ID for the current user
 
@@ -128,9 +128,9 @@ namespace UI_Peach
 
         private void Historic_btn1_Click(object sender, EventArgs e)
         {
-            panel1.Visible = false;
+            panel1.Visible = true;
             panel2.Visible = false;
-            panel3.Visible = true;
+            panel3.Visible = false;
 
             // Get the store ID of the currently logged-in user
             int storeId = GetStoreIdForCurrentUser(); // Replace this with your actual logic to retrieve the store ID for the current user
@@ -190,9 +190,9 @@ namespace UI_Peach
         private void button1_Click_2(object sender, EventArgs e)
         {
 
-            LoginPanel homepage = new LoginPanel();
-            homepage.Show();
-            this.Hide();
+            //LoginPanel homepage = new LoginPanel();
+            //homepage.Show();
+            //this.Hide();
 
         }
 
@@ -233,10 +233,10 @@ namespace UI_Peach
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
             // Verifique se o TextBox está vazio
-            if (!string.IsNullOrWhiteSpace(TBoxquantidade.Text))
+            if (!string.IsNullOrWhiteSpace(BtnTamanhoP.Text))
             {
                 // Ação a ser executada quando o texto é alterado
-                string quantidadeKg = TBoxquantidade.Text;
+                string quantidadeKg = BtnTamanhoP.Text;
 
                 // Faça algo com a quantidade em kg, como salvar em uma variável ou chamar um método
                 // por exemplo: SalvarQuantidadeKg(quantidadeKg);
@@ -280,11 +280,11 @@ namespace UI_Peach
         private void BtnAddReserva_Click(object sender, EventArgs e)
         {
             string nome = BtnName.Text;
-            int quantidade = int.Parse(TBoxquantidade.Text);
+            int quantidade = int.Parse(BtnTamanhoP.Text);
             DateTime data = DateTime.Parse(TBoxData.Text);
             string tamanhoP = BtnTamanhoP.Text;
 
-            if (string.IsNullOrWhiteSpace(nome) || string.IsNullOrWhiteSpace(TBoxquantidade.Text) ||
+            if (string.IsNullOrWhiteSpace(nome) || string.IsNullOrWhiteSpace(BtnTamanhoP.Text) ||
          string.IsNullOrWhiteSpace(TBoxData.Text) || string.IsNullOrWhiteSpace(tamanhoP))
             {
                 MessageBox.Show("Por favor, preencha todos os campos antes de adicionar a reserva.", "Campos vazios",
@@ -455,7 +455,7 @@ namespace UI_Peach
                     dataAdapter.Fill(dataTable);
 
                     // Set the DataTable as the data source for the DataGridView
-                    dataGridView1.DataSource = dataTable;
+                    dataGridView3.DataSource = dataTable;
                 }
                 catch (Exception ex)
                 {
@@ -547,9 +547,9 @@ namespace UI_Peach
         private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
-            if (e.ColumnIndex == dataGridView1.Columns["VerDetalhes"].Index && e.RowIndex >= 0)
+            if (e.ColumnIndex == dataGridView3.Columns["VerDetalhes"].Index && e.RowIndex >= 0)
             {
-                int vendaId = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells["VendaId"].Value);
+                int vendaId = Convert.ToInt32(dataGridView3.Rows[e.RowIndex].Cells["VendaId"].Value);
 
                 // Chame a stored procedure "getCaixasOfSale" para obter os dados
                 using (SqlConnection connection = new SqlConnection("ConnectionString"))
@@ -573,9 +573,9 @@ namespace UI_Peach
         }
         private void dataGridView3_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == dataGridView1.Columns["VerDetalhes"].Index && e.RowIndex >= 0)
+            if (e.ColumnIndex == dataGridView3.Columns["VerDetalhes"].Index && e.RowIndex >= 0)
             {
-                int vendaId = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells["VendaId"].Value);
+                int vendaId = Convert.ToInt32(dataGridView3.Rows[e.RowIndex].Cells["VendaId"].Value);
 
                 // Call the stored procedure "getCaixasOfSale" to retrieve the data
                 string connectionString = "Data Source = tcp:mednat.ieeta.pt\\SQLSERVER,8101;" + " uid = p5g7;" + "password =Paris1020Java ";
@@ -602,7 +602,27 @@ namespace UI_Peach
            
         }
 
-      
+        private void BtnTamanhoP_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            LoginPanel homepage = new LoginPanel();
+            homepage.Show();
+            this.Hide();
+        }
     }
 
 }
