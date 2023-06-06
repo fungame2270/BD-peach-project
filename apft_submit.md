@@ -52,6 +52,7 @@
 
 ## APFE 
 
+Adicionamentos de atributos e entidades ao DER inicial:
 
 Foi implementado na entidade Loja um atributo Disabel que consisti-te em que a Loja pode estar disponievel ou não para cada Loja. 
 E no diagrama de ER decisomos inpllmentar a entidade Login que consistia 
@@ -64,6 +65,7 @@ E no diagrama de ER decisomos inpllmentar a entidade Login que consistia
 
 ### APFE
 
+Adicionamentos de atributos e entidades ao ER inicial:
 
 Foi implementado a Entidade Login com as informacoes de usermane, password, ,store em que pelo menos o nome do user tem que ser difierente para realizar o seu login.
 
@@ -110,6 +112,7 @@ Os passos que usamos para minimizar a duplicação de dados e a sua redução de
 
 
 
+
 ## Índices/Indexes
 
 ```sql
@@ -134,12 +137,6 @@ vez de recorrermos ao SQL Dinâmico.
 - São apresentadas mensagens de erro, ao utilizador de modo a que este
 perceba que introduzir valores ou informações erradas.
 
-## Conclusão/Conclusion
-Sendo neste ponto notório que a base de dados se encontra em funcionamento,
-podemos considerar que a mesma foi implementada.
-Com a implementação da interface gráfica, conseguimos de uma maneira visual e
-apelativa ver toda a estrutura a funcionar corretamente, sendo então concretizado o
-objetivo inicial de uma implementação correta de um sistema de gestão de pêssegos.
 
 ## SQL Programming: Stored Procedures, Triggers, UDF
 
@@ -178,6 +175,13 @@ A Stored Procedure "getVariedadesComCuraAplicada" serve para obter as variedades
 
 
 [SQL Triggers File](sql/03_triggers.sql "SQLFileQuestion")
+
+## Conclusão/Conclusion
+Sendo neste ponto notório que a base de dados se encontra em funcionamento,
+podemos considerar que a mesma foi implementada.
+Com a implementação da interface gráfica, conseguimos de uma maneira visual e
+apelativa ver toda a estrutura a funcionar corretamente, sendo então concretizado o
+objetivo inicial de uma implementação correta de um sistema de gestão de pêssegos.
 
 ## Outras notas/Other notes
 
