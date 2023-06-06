@@ -67,7 +67,7 @@ E no diagrama de ER decisomos inpllmentar a entidade Login que consistia
 
 Adicionamentos de atributos e entidades ao ER inicial:
 
-Foi implementado a Entidade Login com as informacoes de usermane, password, ,store em que pelo menos o nome do user tem que ser difierente para realizar o seu login.
+Foi implementado a Entidade Login com as informacoes de usermane, password ,store em que pelo menos o nome do user tem que ser difierente para realizar o seu login.
 
 ## ​SQL DDL - Data Definition Language
 
@@ -106,10 +106,27 @@ go
 
 ## Normalização/Normalization
 
-Os passos que usamos para minimizar a duplicação de dados e a sua redução de espaço:
-- a ulizadarvaas de vairas tableas isto é a interligacao dessa, como por exmeplos a ligacoa das entidaddes loja caixa , tipo de caixa e varidade
-- a utilização de algumas funções como por exemplo a GetSGBDConnection() que conceta a base de dados 
 
+
+### 1NF (Primeira Forma Normal)
+
+- Verificamos que todas as tabelas que implementamos estão na Primeira Forma Normal(1NF), pois todos os atributos são atômicos, ou seja, não são multivalorados. Por exemplo, na tabela LOJA, que tem como chave primária o ID da loja, os atributos nome, email, telefone e localidade são atômicos, pois não são multivalorados.
+
+### 2NF (Segunda Forma Normal)
+
+- Verificamos que todas as tabelas que implementamos estão na Segunda Forma Normal(2NF), pois todos os atributos não chave dependem da chave primária. Por exemplo, na tabela LOJA, que tem como chave primária o ID da loja, os atributos nome, email, telefone e localidade dependem apenas dessa chave primária.
+
+### 3NF (Terceira Forma Normal)
+
+- Verificamos que todas as tabelas que implementamos estão na Terceira Forma Normal(3NF), pois não existem dependências transitivas e não existem atributos que não dependem da chave primária nelas.
+
+
+
+<!-- Verificamos que todas as tabelas que implementamos estão na Terceira Forma Normal(3NF), pois não existem dependências transitivas e não existem atributos que não dependem da chave primária nelas.
+
+ Por exemplo, na tabela LOJA, que tem como chave primária o ID da loja, os atributos nome, email, telefone e localidade dependem apenas dessa chave primária. Isso significa que não há dependências transitivas, em que um atributo depende de outro atributo que, por sua vez, depende da chave primária. Além disso, não existem atributos na tabela que não dependem da chave primária. -->
+
+ 
 
 
 
