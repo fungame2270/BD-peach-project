@@ -5,9 +5,6 @@
 - Gabriel Teixeira , MEC: 107876
 
 ## Introdução / Introduction
-<!--  
-Escreva uma pequena introdução sobre o trabalho.
-Write a simple introduction about your project. -->
 
     A base de dados tem como finalidade gerenciar o fornecimento de pêssegos para revenda em lojas locais, oferecendo um registro completo das lojas, vendas e reservas associadas, além da possibilidade de gerir a disponibilidade da fruta. Com isso, a empresa poderá controlar de forma eficiente as vendas, reservas e estoques, bem como planejar a produção e a distribuição dos pêssegos de forma estratégica, garantindo a satisfação dos clientes e a maximização dos lucros. A base de dados permitirá ainda a geração de relatórios e estatísticas precisas, auxiliando na tomada de decisões fundamentais para o sucesso do negócio.
 
@@ -55,8 +52,6 @@ Write a simple introduction about your project. -->
 
 ## APFE 
 
-<!-- Descreva sumariamente as melhorias sobre a primeira entrega.
-Describe briefly the improvements made since the first delivery. -->
 
 Foi implementado na entidade Loja um atributo Disabel que consisti-te em que a Loja pode estar disponievel ou não para cada Loja. 
 E no diagrama de ER decisomos inpllmentar a entidade Login que consistia 
@@ -70,8 +65,6 @@ E no diagrama de ER decisomos inpllmentar a entidade Login que consistia
 ### APFE
 
 
-<!-- Descreva sumariamente as melhorias sobre a primeira entrega.
-Describe briefly the improvements made since the first delivery. -->
 Foi implementado a Entidade Login com as informacoes de usermane, password, ,store em que pelo menos o nome do user tem que ser difierente para realizar o seu login.
 
 ## ​SQL DDL - Data Definition Language
@@ -80,18 +73,12 @@ Foi implementado a Entidade Login com as informacoes de usermane, password, ,sto
 
 ## SQL DML - Data Manipulation Language
 
-<!-- Uma secção por formulário.
-A section for each form. -->
 
 ### Formulario exemplo/Example Form
 ### Criação de uma loja 
 ![Exemplo Screenshot!](./Fotos/Create_loja.png )
 
 ```sql
--- Show data on the form
--- SELECT * FROM MY_TABLE ....;
--- Insert new element
--- INSERT INTO MY_TABLE ....;
 
 CREATE PROC addStore (@email VARCHAR(64) = NULL,@name VARCHAR(64),@address VARCHAR(64),@phone VARCHAR(9),@nif INT = NULL)
 AS
@@ -101,6 +88,7 @@ go
 
 
 ```
+
 ## Comfirmar venda
 ![Exemplo Screenshot1!](./Fotos/Confrim_btn.png )
 ```sql
@@ -112,27 +100,19 @@ go
 ```
 
 
-
 ...
 
 ## Normalização/Normalization
 
-<!-- Descreva os passos utilizados para minimizar a duplicação de dados / redução de espaço.
-Justifique as opções tomadas.
-Describe the steps used to minimize data duplication / space reduction.
-Justify the choices made. -->
 Os passos que usamos para minimizar a duplicação de dados e a sua redução de espaço:
 - a ulizadarvaas de vairas tableas isto é a interligacao dessa, como por exmeplos a ligacoa das entidaddes loja caixa , tipo de caixa e varidade
 - a utilização de algumas funções como por exemplo a GetSGBDConnection() que conceta a base de dados 
 
+
+
 ## Índices/Indexes
 
-<!-- Descreva os indices criados. Junte uma cópia do SQL de criação do indice.
-Describe the indexes created. Attach a copy of the SQL to create the index. -->
-
 ```sql
--- Create an index to speed
--- CREATE INDEX index_name ON table_name (column1, column2, ...);
 
 CREATE PROC addToVenda(@sale INT,@weigth DECIMAL(4,2),@code INT,@size VARCHAR(6))
 AS
@@ -143,10 +123,59 @@ go
 
 ```
 A Stored Procedure "addToVenda" serve para adicionar um novo registro à tabela "CAIXA" em um sistema de vendas, especificos para "sale", "weight", "code" e "size". Essa Stored Procedure é usada quando há a necessidade de registrar informações sobre vendas em caixas.
+## Seguranca/Security
+
+De modo a tentar minimizar possíveis vulnerabilidades da base de dados a ataques
+de SQL Injection. De modo a prevenir estes problemas, na implementação da base de dados
+foram tidos em conta os seguintes pontos:
+- Verificações dos dados inseridos pelos utilizadores, (através de triggers)
+- Tentamos ao máximo utilizar SQL Parametrizado ou Stored Procedures , em
+vez de recorrermos ao SQL Dinâmico.
+- São apresentadas mensagens de erro, ao utilizador de modo a que este
+perceba que introduzir valores ou informações erradas.
+
+## Conclusão/Conclusion
+Sendo neste ponto notório que a base de dados se encontra em funcionamento,
+podemos considerar que a mesma foi implementada.
+Com a implementação da interface gráfica, conseguimos de uma maneira visual e
+apelativa ver toda a estrutura a funcionar corretamente, sendo então concretizado o
+objetivo inicial de uma implementação correta de um sistema de gestão de pêssegos.
 
 ## SQL Programming: Stored Procedures, Triggers, UDF
 
-[SQL SPs and Functions File](sql/02_sp_functions.sql "SQLFileQuestion")
+[SQL SPs and Functions File](./UDF.sql )
+### Exemplos de Triggers
+
+ - Adicionar index para store 
+ - Adicionar index para name e nif
+
+```sql
+
+meter aqui o codigo
+
+```
+
+
+
+### Exemplo de uma UDF
+
+```sql
+DROP FUNCTION IF EXISTS getVariedadesComCuraAplicada
+go
+CREATE FUNCTION getVariedadesComCuraAplicada() RETURNS @table TABLE (variedades INT)
+AS
+BEGIN
+DECLARE @now  DATETIME = GETDATE();
+INSERT @table
+	SELECT V.code
+	FROM VARIEDADE AS V JOIN CURAS AS C on V.code  = C.variety JOIN FITOFARMACEUTICOS on FITOFARMACEUTICOS.id = C.fitofarmaceutic
+	WHERE DATEDIFF(HOUR,C.dateH,@now) < FITOFARMACEUTICOS.interval_days*24
+RETURN;
+END
+
+```
+A Stored Procedure "getVariedadesComCuraAplicada" serve para obter as variedades que têm cura aplicada. Essa Stored Procedure é usada quando há a necessidade de obter as variedades que têm cura aplicada.
+
 
 [SQL Triggers File](sql/03_triggers.sql "SQLFileQuestion")
 
