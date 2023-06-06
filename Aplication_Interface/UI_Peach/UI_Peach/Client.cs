@@ -100,7 +100,7 @@ namespace UI_Peach
                     dataAdapter = new SqlDataAdapter();
 
                     // Set the SelectCommand to the stored procedure
-                    dataAdapter.SelectCommand = new SqlCommand("help_me", connection);
+                    dataAdapter.SelectCommand = new SqlCommand("DadosReserva", connection);
                     dataAdapter.SelectCommand.CommandType = CommandType.StoredProcedure;
                     dataAdapter.SelectCommand.Parameters.AddWithValue("@store", storeId);
 
@@ -140,7 +140,7 @@ namespace UI_Peach
                     dataAdapter = new SqlDataAdapter();
 
                     // Set the SelectCommand to the stored procedure
-                    dataAdapter.SelectCommand = new SqlCommand("help_me", connection);
+                    dataAdapter.SelectCommand = new SqlCommand("DadosReserva", connection);
                     dataAdapter.SelectCommand.CommandType = CommandType.StoredProcedure;
                     dataAdapter.SelectCommand.Parameters.AddWithValue("@store", storeId);
 
@@ -213,7 +213,7 @@ namespace UI_Peach
                     dataAdapter = new SqlDataAdapter();
 
                     // Set the SelectCommand to the stored procedure
-                    dataAdapter.SelectCommand = new SqlCommand("help_me", connection);
+                    dataAdapter.SelectCommand = new SqlCommand("DadosReserva", connection);
                     dataAdapter.SelectCommand.CommandType = CommandType.StoredProcedure;
                     dataAdapter.SelectCommand.Parameters.AddWithValue("@store", storeId);
 
@@ -249,7 +249,7 @@ namespace UI_Peach
                     dataAdapter = new SqlDataAdapter();
 
                     // Set the SelectCommand to the stored procedure
-                    dataAdapter.SelectCommand = new SqlCommand("help_me", connection);
+                    dataAdapter.SelectCommand = new SqlCommand("DadosReserva", connection);
                     dataAdapter.SelectCommand.CommandType = CommandType.StoredProcedure;
                     dataAdapter.SelectCommand.Parameters.AddWithValue("@store", storeId);
 

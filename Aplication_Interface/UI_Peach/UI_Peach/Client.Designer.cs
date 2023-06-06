@@ -37,7 +37,6 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.Btn_c_reserva = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.BtnName = new System.Windows.Forms.ComboBox();
             this.BtnTamanhoP = new System.Windows.Forms.ComboBox();
@@ -63,36 +62,46 @@
             // 
             // Criar_rev_btn2
             // 
+            this.Criar_rev_btn2.BackColor = System.Drawing.Color.DarkOrange;
+            this.Criar_rev_btn2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Criar_rev_btn2.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.Criar_rev_btn2.Location = new System.Drawing.Point(201, 39);
             this.Criar_rev_btn2.Name = "Criar_rev_btn2";
             this.Criar_rev_btn2.Size = new System.Drawing.Size(106, 63);
             this.Criar_rev_btn2.TabIndex = 2;
             this.Criar_rev_btn2.Text = "Criar reserva";
-            this.Criar_rev_btn2.UseVisualStyleBackColor = true;
+            this.Criar_rev_btn2.UseVisualStyleBackColor = false;
             this.Criar_rev_btn2.Click += new System.EventHandler(this.Criar_rev_btn2_Click);
             // 
             // button2
             // 
+            this.button2.BackColor = System.Drawing.Color.DarkOrange;
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.button2.Location = new System.Drawing.Point(335, 39);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(106, 63);
             this.button2.TabIndex = 3;
             this.button2.Text = "Remover reserva";
-            this.button2.UseVisualStyleBackColor = true;
+            this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // Historic_btn1
             // 
+            this.Historic_btn1.BackColor = System.Drawing.Color.DarkOrange;
+            this.Historic_btn1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Historic_btn1.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.Historic_btn1.Location = new System.Drawing.Point(73, 39);
             this.Historic_btn1.Name = "Historic_btn1";
             this.Historic_btn1.Size = new System.Drawing.Size(113, 63);
             this.Historic_btn1.TabIndex = 4;
             this.Historic_btn1.Text = "Historico";
-            this.Historic_btn1.UseVisualStyleBackColor = true;
+            this.Historic_btn1.UseVisualStyleBackColor = false;
             this.Historic_btn1.Click += new System.EventHandler(this.Historic_btn1_Click);
             // 
             // panel1
             // 
+            this.panel1.BackColor = System.Drawing.Color.Bisque;
             this.panel1.Controls.Add(this.hs);
             this.panel1.Controls.Add(this.dataGridView3);
             this.panel1.Location = new System.Drawing.Point(49, 167);
@@ -112,6 +121,7 @@
             // 
             // dataGridView3
             // 
+            this.dataGridView3.BackgroundColor = System.Drawing.Color.Moccasin;
             this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView3.Location = new System.Drawing.Point(43, 60);
             this.dataGridView3.Name = "dataGridView3";
@@ -122,9 +132,9 @@
             // 
             // panel2
             // 
+            this.panel2.BackColor = System.Drawing.Color.Bisque;
             this.panel2.Controls.Add(this.dateTimePicker1);
             this.panel2.Controls.Add(this.Btn_c_reserva);
-            this.panel2.Controls.Add(this.label7);
             this.panel2.Controls.Add(this.label6);
             this.panel2.Controls.Add(this.BtnName);
             this.panel2.Controls.Add(this.BtnTamanhoP);
@@ -134,7 +144,7 @@
             this.panel2.Controls.Add(this.textBox1);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.dataGridView1);
-            this.panel2.Location = new System.Drawing.Point(12, 181);
+            this.panel2.Location = new System.Drawing.Point(61, 155);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1305, 556);
             this.panel2.TabIndex = 6;
@@ -158,15 +168,6 @@
             this.Btn_c_reserva.Text = "Criar Reserva";
             this.Btn_c_reserva.UseVisualStyleBackColor = false;
             this.Btn_c_reserva.Click += new System.EventHandler(this.Btn_c_reserva_Click);
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(1268, 221);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(26, 20);
-            this.label7.TabIndex = 11;
-            this.label7.Text = "kg";
             // 
             // label6
             // 
@@ -213,9 +214,9 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(998, 184);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(92, 20);
+            this.label4.Size = new System.Drawing.Size(165, 20);
             this.label4.TabIndex = 5;
-            this.label4.Text = "Quantidade";
+            this.label4.Text = "Quantidade de Caixas";
             this.label4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // label3
@@ -247,6 +248,7 @@
             // 
             // dataGridView1
             // 
+            this.dataGridView1.BackgroundColor = System.Drawing.Color.Moccasin;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(37, 43);
             this.dataGridView1.Name = "dataGridView1";
@@ -258,11 +260,12 @@
             // 
             // panel3
             // 
+            this.panel3.BackColor = System.Drawing.Color.Bisque;
             this.panel3.Controls.Add(this.Btn_r_reserva);
             this.panel3.Controls.Add(this.TxB_Id);
             this.panel3.Controls.Add(this.label2);
             this.panel3.Controls.Add(this.dataGridView2);
-            this.panel3.Location = new System.Drawing.Point(27, 174);
+            this.panel3.Location = new System.Drawing.Point(29, 174);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1354, 645);
             this.panel3.TabIndex = 7;
@@ -293,12 +296,13 @@
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(1028, 108);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(202, 22);
+            this.label2.Size = new System.Drawing.Size(158, 22);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Remover Loja pelo ID";
+            this.label2.Text = "Remover pelo ID";
             // 
             // dataGridView2
             // 
+            this.dataGridView2.BackgroundColor = System.Drawing.Color.Moccasin;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.Location = new System.Drawing.Point(63, 101);
             this.dataGridView2.Name = "dataGridView2";
@@ -310,18 +314,22 @@
             // 
             // button3
             // 
+            this.button3.BackColor = System.Drawing.Color.DarkOrange;
+            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button3.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.button3.Location = new System.Drawing.Point(470, 39);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(106, 63);
             this.button3.TabIndex = 8;
             this.button3.Text = "Login";
-            this.button3.UseVisualStyleBackColor = true;
+            this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.Bisque;
             this.ClientSize = new System.Drawing.Size(1433, 831);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.panel3);
@@ -367,7 +375,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox BtnName;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button Btn_r_reserva;
         private System.Windows.Forms.Button Btn_c_reserva;
