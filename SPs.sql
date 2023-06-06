@@ -233,7 +233,6 @@ go
 CREATE PROCEDURE getStoreRes @store INT
 AS
 BEGIN
-    IF @store IS NULL
     BEGIN
         PRINT 'Store ID not provided';
         RETURN;
@@ -243,18 +242,8 @@ BEGIN
 		FROM RESERVA AS R JOIN TIPOCAIXARESERVA AS TR ON R.store = TR.code
 		WHERE R.store = @store;
     END
-    
-    
 END
-go
 
-CREATE PROCEDURE GetStoreNames
-AS
-BEGIN
-    SELECT [name],id 
-	FROM LOJA
-	WHERE LOJA.[disabled] = 0
-END
 go
 
 CREATE PROCEDURE GetVariatyNames
