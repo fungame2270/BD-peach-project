@@ -185,21 +185,17 @@ ALTER PROCEDURE help_me
     @store INT
 AS
 BEGIN
-    IF @store IS NULL
     BEGIN
-        PRINT 'Store ID not provided';
-        RETURN;
-    END
-    BEGIN
-         SELECT R.id, R.[date], R.store,TR.code, TR.size, TR.quantity --TR.code,
+         SELECT R.id, R.[date],TR.code, TR.size, TR.quantity --TR.code, R.store
 		FROM RESERVA AS R
 		JOIN TIPOCAIXARESERVA AS TR ON R.store = TR.code
-		WHERE R.store = @store;
+		--WHERE R.store = @store;
     END
-    
-    
 END
 exec help_me @store=8
+exec help_mes @store=8
+
+
 
 CREATE TRIGGER VerificarForData
 ON TIPOCAIXARESERVA -- Substitua "NomeDaTabela" pelo nome da tabela que deseja verificar
@@ -245,15 +241,28 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- Inserir na tabela peachProject.RESERVA
+    -- Inserir na tabela RESERVA
     INSERT INTO RESERVA ([date], store)
     VALUES (@reservationDate, @storeId);
 
-    -- Inserir na tabela peachProject.TIPOCAIXARESERVA
+    -- Inserir na tabela TIPOCAIXARESERVA
     INSERT INTO TIPOCAIXARESERVA (code, size, quantity)
     VALUES (@code, @size, @quantity);
 END
 
+exec InsertReservation;
 
-DROP PROCEDURE IF EXISTS InsertReservation;
+---
+CREATE PROCEDURE help_mes
+    @store INT
+AS
+BEGIN
+    SELECT DISTINCT R.id, R.[date], TR.code, TR.size, TR.quantity
+    FROM RESERVA AS R
+    JOIN TIPOCAIXARESERVA AS TR ON R.store = TR.code
+    WHERE R.store = @store;
+END
+exec help_mes @store=8
+
+DROP PROCEDURE IF EXISTS GetStoreHistory;
 
