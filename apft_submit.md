@@ -1,12 +1,12 @@
 # BD: Trabalho Prático APF-T
 
-**Grupo**: PXGY
+**Grupo**: P5G7
 - Tómas Victal, MEC: 109018 
 - Gabriel Teixeira , MEC: 107876
 
 ## Introdução / Introduction
 
-    A base de dados tem como finalidade gerenciar o fornecimento de pêssegos para revenda em lojas locais, oferecendo um registro completo das lojas, vendas e reservas associadas, além da possibilidade de gerir a disponibilidade da fruta. Com isso, a empresa poderá controlar de forma eficiente as vendas, reservas e estoques, bem como planejar a produção e a distribuição dos pêssegos de forma estratégica, garantindo a satisfação dos clientes e a maximização dos lucros. A base de dados permitirá ainda a geração de relatórios e estatísticas precisas, auxiliando na tomada de decisões fundamentais para o sucesso do negócio.
+    A base de dados tem como finalidade gerenciar o fornecimento de pêssegos para revenda em lojas locais, oferecendo um registro completo das lojas, vendas e reservas associadas, além da possibilidade de gerir a disponibilidade da fruta. Com isso, a empresa poderá controlar de forma eficiente as vendas, reservas e estoques, bem como planejar a produção e a distribuição dos pêssegos de forma estratégica, garantindo a satisfação dos clientes e a maximização dos lucros.
 
 ## ​Análise de Requisitos / Requirements
 
@@ -46,7 +46,7 @@
 
 # DER - Diagrama Entidade Relacionamento/Entity Relationship Diagram
 
-### Versão final/Final version
+## Versão final/Final version
 
 ![DER Diagram!](./Fotos/diagrama_DER.png)
 
@@ -54,16 +54,16 @@
 
 Adicionamentos de atributos e entidades ao DER inicial:
 
-Foi implementado na entidade Loja um atributo Disabel que consisti-te em que a Loja pode estar disponievel ou não para cada Loja. 
-E no diagrama de ER decisomos inpllmentar a entidade Login que consistia 
+Foi implementado na entidade Loja um atributo Disabled que consisti-te em que a Loja pode estar desabilitada nao aparecendo na interface no entanto ficamos com os dados da mesma. 
+E no diagrama de ER decisomos inplementar a entidade Login que consistia 
 
-## ER - Esquema Relacional/Relational Schema
+# ER - Esquema Relacional/Relational Schema
 
-### Versão final/Final Version
+## Versão final/Final Version
 
 ![ER Diagram!](./Fotos/ER_atualizad.png)
 
-### APFE
+## APFE
 
 Adicionamentos de atributos e entidades ao ER inicial:
 
@@ -73,7 +73,7 @@ Foi implementado a Entidade Login com as informacoes de usermane, password ,stor
 
 [SQL DDL File](./Create_DataBase.sql)
 
-## SQL DML - Data Manipulation Language
+# SQL DML - Data Manipulation Language
 
 
 ### Formulario exemplo/Example Form
@@ -91,18 +91,32 @@ go
 
 ```
 
-## Comfirmar venda
+## Criar venda
 ![Exemplo Screenshot1!](./Fotos/Confrim_btn.png )
 ```sql
-CREATE PROC addToVenda(@sale INT,@weigth DECIMAL(4,2),@code INT,@size VARCHAR(6))
+CREATE PROC newVenda(@state VARCHAR(7),@date DATE,@store INT,@caixas dbo.CaixaParamaterSp READONLY)
 AS
-INSERT INTO CAIXA(sale,[weight],code,size) VALUES
-	(@sale,@weigth,@code,@size);
-go
+BEGIN
+	BEGIN TRANSACTION
+	SAVE TRANSACTION SavePoint;
+	BEGIN TRY
+		INSERT INTO VENDA ([state],[date],[store]) VALUES
+		(@state,@date,@store);
+
+		declare @venda INT = SCOPE_IDENTITY()
+
+		INSERT INTO CAIXA(sale,[weight],code,size)
+		SELECT @venda,* FROM @caixas
+		COMMIT TRANSACTION 
+	END TRY
+	BEGIN CATCH
+        IF @@TRANCOUNT > 0
+        BEGIN
+            ROLLBACK TRANSACTION SavePoint;
+        END
+    END CATCH
+END
 ```
-
-
-...
 
 ## Normalização/Normalization
 
@@ -122,9 +136,8 @@ go
 
 
 
-<!-- Verificamos que todas as tabelas que implementamos estão na Terceira Forma Normal(3NF), pois não existem dependências transitivas e não existem atributos que não dependem da chave primária nelas.
-
- Por exemplo, na tabela LOJA, que tem como chave primária o ID da loja, os atributos nome, email, telefone e localidade dependem apenas dessa chave primária. Isso significa que não há dependências transitivas, em que um atributo depende de outro atributo que, por sua vez, depende da chave primária. Além disso, não existem atributos na tabela que não dependem da chave primária. -->
+### ex:
+ Por exemplo, na tabela LOJA, que tem como chave primária o ID da loja, os atributos nome, email, telefone e localidade dependem apenas dessa chave primária. Isso significa que não há dependências transitivas, em que um atributo depende de outro atributo que, por sua vez, depende da chave primária. Além disso, não existem atributos na tabela que não dependem da chave primária.
 
  
 
@@ -133,46 +146,43 @@ go
 ## Índices/Indexes
 
 ```sql
-
-CREATE PROC addToVenda(@sale INT,@weigth DECIMAL(4,2),@code INT,@size VARCHAR(6))
-AS
-INSERT INTO CAIXA(sale,[weight],code,size) VALUES
-	(@sale,@weigth,@code,@size);
-go
-
-
+CREATE INDEX ixStoreInVenda ON VENDA (store);
+CREATE INDEX ixStoreInReserva ON RESERVA (store);
+CREATE INDEX ixNameInLoja on LOJA([name]);
+CREATE INDEX ixNifInLoja on LOJA(nif);
 ```
-A Stored Procedure "addToVenda" serve para adicionar um novo registro à tabela "CAIXA" em um sistema de vendas, especificos para "sale", "weight", "code" e "size". Essa Stored Procedure é usada quando há a necessidade de registrar informações sobre vendas em caixas.
+Os 2 primeiros indices apresentados sao uteis pois usamos muito a pesquisa por loja para a interface do cliente
+Os dois segundos sao uteis num caso em que se implemente sistemas de busca por nif ou nome.
 ## Seguranca/Security
 
 De modo a tentar minimizar possíveis vulnerabilidades da base de dados a ataques
 de SQL Injection. De modo a prevenir estes problemas, na implementação da base de dados
 foram tidos em conta os seguintes pontos:
-- Verificações dos dados inseridos pelos utilizadores, (através de triggers)
 - Tentamos ao máximo utilizar SQL Parametrizado ou Stored Procedures , em
 vez de recorrermos ao SQL Dinâmico.
-- São apresentadas mensagens de erro, ao utilizador de modo a que este
-perceba que introduzir valores ou informações erradas.
+
+O que nao foi feito:
+- Na tabela de LOGIN deviamos usar uma funcao hash para guardar a password.
+- Em termos de utilizadores da base de dados deviamos criar um que nao tivesse todas as permissoes para os clientes pudessem usar a base dados (escritas e leituras).
 
 
-## SQL Programming: Stored Procedures, Triggers, UDF
+# SQL Programming: Stored Procedures, Triggers, UDF
+## Stored Procedures
+Usados como camada de abstracao para base de dados.
+Duas SP sao com trasacao 'newVenda' e 'newReserva' pois estam fazem bastantes insertes e a venda/reseva so e feita se todos funcionarem.
 
-[SQL SPs and Functions File](./UDF.sql )
-### Exemplos de Triggers
+[SQL SP File](./SP.sql )
+## Triggers
+Temos um trigger que nao permite lojas seram apagadas estas entao sao desabilitadas.
 
- - Adicionar index para store 
- - Adicionar index para name e nif
+Seria ainda interessante a criacao de um trigger para quando fosse intrudosido uma reserva as caixas dessa reserva fossem descontabilizadas das disponiveis na tabela TIPODECAIXA.
 
-```sql
-
-meter aqui o codigo
-
-```
-
+[SQL Triggers File](./triggers.sql )
 
 
-### Exemplo de uma UDF
-
+## UDFs
+Criamos uma UDF com o objetivo de ela ser reutilizavel em varios SELECTS que estao nos SP
+[SQL Functions File](./UDF.sql )
 ```sql
 DROP FUNCTION IF EXISTS getVariedadesComCuraAplicada
 go
@@ -188,10 +198,7 @@ RETURN;
 END
 
 ```
-A Stored Procedure "getVariedadesComCuraAplicada" serve para obter as variedades que têm cura aplicada. Essa Stored Procedure é usada quando há a necessidade de obter as variedades que têm cura aplicada.
-
-
-[SQL Triggers File](sql/03_triggers.sql "SQLFileQuestion")
+A UDF "getVariedadesComCuraAplicada" serve para obter as variedades que têm cura aplicada. Essa Stored Procedure é usada quando há a necessidade de obter as variedades que têm cura aplicada.
 
 ## Conclusão/Conclusion
 Sendo neste ponto notório que a base de dados se encontra em funcionamento,
@@ -206,6 +213,26 @@ objetivo inicial de uma implementação correta de um sistema de gestão de pês
 
 [Indexes File](sql/01_ddl.sql "SQLFileQuestion")
 
+LOGINS PARA TESTE:
+```
+ADM:
+user:adm
+pass:adm123
+
+Clientes:
+user:Girassol
+pass:teste123
+user:adega_Casal
+pass:teste123
+```
+
+Divisao de esforcos:
+```
+- Tómas Victal, MEC: 109018      		60%
+- Gabriel Teixeira , MEC: 107876		40%
+```
+
+Video Demonstrativo: https://youtu.be/i2tp3VgKfew .
 
 
  
