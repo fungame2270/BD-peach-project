@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace UI_Peach
 {
@@ -67,7 +69,8 @@ namespace UI_Peach
 
         private SqlConnection getSGBDConnection()
         {
-            return new SqlConnection("Data Source = THE_MACHINE\\SQLEXPRESS;" + "Initial Catalog = peachProject; uid = Teste;" + "password = booga");
+            //return new SqlConnection("Data Source = THE_MACHINE\\SQLEXPRESS;" + "Initial Catalog = peachProject; uid = Teste;" + "password = booga");
+            return new SqlConnection("Data Source = tcp:mednat.ieeta.pt\\SQLSERVER, 8101; " + " uid = p5g7; " + "password = Paris1020Java ");
         }
 
 
@@ -243,27 +246,27 @@ namespace UI_Peach
         {
             if (!verifySGBDConnection())
                 return;
-            SqlCommand cmd = new SqlCommand("newVenda",conn);
+            DataTable dataTable= new DataTable();
+            dataTable.Columns.Add("[weight]", typeof(decimal));
+            dataTable.Columns.Add("code", typeof(Int32));
+            dataTable.Columns.Add("size", typeof(String));
+            foreach (Caixa c in CaixasInVendaCreateList.Items)
+            {
+                dataTable.Rows.Add(c.Weight,c.Variedade,c.Size);
+            }
+
+
+            SqlCommand cmd = new SqlCommand("newVenda", conn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@store", SqlDbType.Int).Value = Convert.ToInt32(vendacreatestore.Text);
-            cmd.Parameters.Add("@state", SqlDbType.VarChar, 7).Value = vendacreatestate.Text;
+            Store s = (Store)vendacreatestoreDrop.SelectedItem;
+            cmd.Parameters.Add("@store", SqlDbType.Int).Value = Convert.ToInt32(s.Id);
+            cmd.Parameters.Add("@state", SqlDbType.VarChar, 7).Value = vendacreatestateDrop.SelectedItem.ToString();
             cmd.Parameters.Add("@date", SqlDbType.Date).Value = DateTime.Now.ToString();
-            cmd.Parameters.Add("@venda", SqlDbType.Int).Direction = ParameterDirection.Output;
+            SqlParameter sqlParam = cmd.Parameters.AddWithValue("@caixas", dataTable);
+            sqlParam.SqlDbType = SqlDbType.Structured;
             cmd.ExecuteNonQuery();
 
-            int sale = Convert.ToInt32(cmd.Parameters["@venda"].Value);
-            foreach(Caixa c in CaixasInVendaCreateList.Items)
-            {
-                cmd.CommandText = "addToVenda";
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Clear();
-                cmd.Parameters.Add("@sale", SqlDbType.Int).Value = sale;
-                cmd.Parameters.Add("@weigth", SqlDbType.Decimal, 4).Value = c.Weight;
-                cmd.Parameters.Add("@code", SqlDbType.Int).Value = c.Variedade;
-                cmd.Parameters.Add("@size", SqlDbType.VarChar,6).Value = c.Size;
-                cmd.ExecuteNonQuery();
-
-            }
+            conn.Close();
             CaixasInVendaCreateList.Items.Clear();
             salesPanel.BringToFront();
 
@@ -272,12 +275,13 @@ namespace UI_Peach
         private void addCaixatoVenda_Click(object sender, EventArgs e)
         {
             Caixa c = new Caixa();
-            c.Variedade = CaixaVendaVariedadeBox.Text;
-            c.Size = CaixaVendaSizeBox.Text;
+            Variadade v = CaixaVendaVariedadeBoxDrop.SelectedItem as Variadade;
+            c.Variedade = v.Code;
+            c.Size = CaixaVendaSizeBoxDrop.SelectedItem.ToString();
             c.Weight = caixaVendaPesoBox.Text;
             caixaVendaPesoBox.Text = "";
-            CaixaVendaSizeBox.Text = "";
-            CaixaVendaVariedadeBox.Text = "";
+            CaixaVendaSizeBoxDrop.SelectionLength = 0;
+            CaixaVendaVariedadeBoxDrop.SelectionLength = 0;
             CaixasInVendaCreateList.Items.Add(c);
         }
 
@@ -290,6 +294,52 @@ namespace UI_Peach
         private void CreateSaleBtn_Click(object sender, EventArgs e)
         {
             createSalePanel.BringToFront();
+            if(vendacreatestoreDrop.Items.Count == 0)
+            {
+                if (!verifySGBDConnection())
+                    return;
+                SqlCommand command = new SqlCommand("GetStoreNames", conn);
+                command.CommandType = CommandType.StoredProcedure;
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    Store S = new Store();
+                    S.Id = reader["id"].ToString();
+                    S.Name = reader["name"].ToString();
+                    vendacreatestoreDrop.Items.Add(S);
+                }
+                reader.Close();
+                conn.Close();
+            }
+            if(vendacreatestateDrop.Items.Count == 0)
+            {
+                vendacreatestateDrop.Items.Add("CREDITO");
+                vendacreatestateDrop.Items.Add("PAGO");
+            }
+            if(CaixaVendaVariedadeBoxDrop.Items.Count == 0)
+            {
+                if (!verifySGBDConnection())
+                    return;
+                SqlCommand command = new SqlCommand("GetVariatyNames", conn);
+                command.CommandType = CommandType.StoredProcedure;
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    Variadade S = new Variadade();
+                    S.Code = reader["code"].ToString();
+                    S.Name = reader["name"].ToString();
+                    CaixaVendaVariedadeBoxDrop.Items.Add(S);
+                }
+                reader.Close();
+                conn.Close();
+            }
+            if(CaixaVendaSizeBoxDrop.Items.Count == 0)
+            {
+                CaixaVendaSizeBoxDrop.Items.Add("SMALL");
+                CaixaVendaSizeBoxDrop.Items.Add("MEDIUM");
+                CaixaVendaSizeBoxDrop.Items.Add("BIG");
+            }
+
         }
 
         private void reservationsButton_Click(object sender, EventArgs e)
@@ -326,6 +376,7 @@ namespace UI_Peach
         private void showResTCaixas()
         {
             if (currentRes < 0) return;
+            if(listReservations.Items.Count == 0) return;
             Reservation s = new Reservation();
             s = (Reservation)listReservations.Items[currentRes];
             idOfVenda.Text = s.ID;
@@ -380,6 +431,7 @@ namespace UI_Peach
             cmd.CommandType = CommandType.StoredProcedure;
             SqlDataReader reader = cmd.ExecuteReader();
             listVarietys.Items.Clear();
+            variatyHeader.Text = String.Format("{0,-30} {1,10} {2,4} {3,10}", "name", "Season", "tree N", "Disponibilidade");
 
             while (reader.Read())
             {
@@ -453,6 +505,174 @@ namespace UI_Peach
                 CurasAplicadasVariedade.Items.Add(s);
             }
             conn.Close();
+        }
+
+        private void DeleteStore_Click(object sender, EventArgs e)
+        {
+            if (!verifySGBDConnection())
+                return;
+            if (CurrentStore < 0) return;
+            Store s = new Store();
+            s = (Store)storeList.Items[CurrentStore];
+            SqlCommand cmd = new SqlCommand("deleteStore", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@id", SqlDbType.Int).Value = Convert.ToInt32(s.Id);
+            cmd.ExecuteNonQuery();
+            conn.Close();
+            loadStores();
+        }
+
+        private void curaalpicarbtn_Click(object sender, EventArgs e)
+        {
+            CaixaVendaVariedadeBoxDrop2.Items.Clear();
+            fitoDrop.Items.Clear();
+            if (!verifySGBDConnection())
+                return;
+            SqlCommand command = new SqlCommand("GetVariatyNames", conn);
+            command.CommandType = CommandType.StoredProcedure;
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Variadade S = new Variadade();
+                S.Code = reader["code"].ToString();
+                S.Name = reader["name"].ToString();
+                CaixaVendaVariedadeBoxDrop2.Items.Add(S);
+            }
+            reader.Close();
+            conn.Close();
+            if (!verifySGBDConnection())
+                return;
+            SqlCommand cmd = new SqlCommand("dbo.getFito", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                fitoDrop.Items.Add(reader["id"]);
+            }
+            conn.Close();
+            aplicarCuraPanel.BringToFront();
+        }
+
+        private void CancelCura_Click(object sender, EventArgs e)
+        {
+            VariedadesPanel.BringToFront();
+        }
+
+        private void addCura_Click(object sender, EventArgs e)
+        {
+            if (!verifySGBDConnection())
+                return;
+            SqlCommand cmd = new SqlCommand("aplicarCura", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@fito", SqlDbType.Int).Value = Convert.ToInt32(fitoDrop.SelectedItem.ToString());
+            Variadade v = CaixaVendaVariedadeBoxDrop2.SelectedItem as Variadade;
+            cmd.Parameters.Add("@var", SqlDbType.VarChar, 7).Value = v.Code.ToString();
+            cmd.Parameters.Add("@date", SqlDbType.Date).Value = dateChoseCura.Value.ToString();
+            cmd.ExecuteNonQuery();
+            conn.Close();
+            loadVari();
+            VariedadesPanel.BringToFront();
+        }
+
+        private void setDispBtn_Click(object sender, EventArgs e)
+        {
+            Painel_de_disp.BringToFront();
+            loadDisponibilidades();
+        }
+
+        private void loadDisponibilidades()
+        {
+            if (!verifySGBDConnection())
+                return;
+            SqlCommand command = new SqlCommand("seeAvailability", conn);
+            command.CommandType = CommandType.StoredProcedure;
+            SqlDataReader reader = command.ExecuteReader();
+            listTipoCaixaAvilable.Items.Clear();
+            while (reader.Read())
+            {
+                TipoDeCaixa tc = new TipoDeCaixa();
+                tc.Name = reader["name"].ToString();
+                tc.Size = reader["size"].ToString();
+                tc.Availability = reader["availability"].ToString();
+                tc.PriceKg = reader["pricekg"].ToString();
+                listTipoCaixaAvilable.Items.Add(tc);
+            }
+            reader.Close();
+            if (!verifySGBDConnection())
+                return;
+            dispVar.Items.Clear();
+            command = new SqlCommand("GetVariatyNames", conn);
+            command.CommandType = CommandType.StoredProcedure;
+            reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Variadade S = new Variadade();
+                S.Code = reader["code"].ToString();
+                S.Name = reader["name"].ToString();
+                dispVar.Items.Add(S);
+            }
+            reader.Close();
+            conn.Close();
+            sizeDropDis.Items.Clear();
+            sizeDropDis.Items.Add("SMALL");
+            sizeDropDis.Items.Add("MEDIUM");
+            sizeDropDis.Items.Add("BIG");
+            dispText.Text = "";
+
+        }
+
+        private void loadAvailable()
+        {
+            if (!verifySGBDConnection())
+                return;
+            SqlCommand cmd = new SqlCommand("getAvailabilityOf", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            Variadade v;
+            if(dispVar.SelectedIndex > -1)
+                v = dispVar.SelectedItem as Variadade;
+            else
+            {
+                v = new Variadade();
+                v.Code = "-1";
+            }
+            cmd.Parameters.Add("@code", SqlDbType.Int).Value = Convert.ToInt32(v.Code);
+            cmd.Parameters.Add("@size", SqlDbType.VarChar, 6).Value = sizeDropDis.SelectedIndex > -1 ? sizeDropDis.SelectedItem : "";
+            cmd.Parameters.Add("@disp", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.ExecuteNonQuery();
+            dispText.Text = cmd.Parameters["@disp"].Value.ToString();
+            conn.Close();
+
+        }
+
+        private void dispVar_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            loadAvailable();
+        }
+
+        private void sizeDropDis_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            loadAvailable();
+        }
+
+        private void apudateBtn_Click(object sender, EventArgs e)
+        {
+            if (!verifySGBDConnection())
+                return;
+            SqlCommand cmd = new SqlCommand("updateAvailabilityOf", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            if (dispVar.SelectedIndex <= -1)
+                return;
+            if (sizeDropDis.SelectedIndex <= -1)
+                return;
+            Variadade v = dispVar.SelectedItem as Variadade;
+            cmd.Parameters.Add("@code", SqlDbType.Int).Value = Convert.ToInt32(v.Code);
+            cmd.Parameters.Add("@size", SqlDbType.VarChar, 6).Value = sizeDropDis.SelectedItem;
+            cmd.Parameters.Add("@disp", SqlDbType.Int).Value = Convert.ToInt32(dispText.Text);
+            cmd.ExecuteNonQuery();
+            conn.Close();
+            MessageBox.Show("Updated with success");
+            loadDisponibilidades();
         }
     }
 }

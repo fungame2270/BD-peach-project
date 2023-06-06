@@ -33,6 +33,7 @@
             this.reservationsButton = new System.Windows.Forms.Button();
             this.VariedadesBtn = new System.Windows.Forms.Button();
             this.storesPanel = new System.Windows.Forms.Panel();
+            this.DeleteStore = new System.Windows.Forms.Button();
             this.cancelStoreC = new System.Windows.Forms.Button();
             this.createStoreButton = new System.Windows.Forms.Button();
             this.newStoreStore = new System.Windows.Forms.Button();
@@ -48,6 +49,7 @@
             this.storeNameBox = new System.Windows.Forms.TextBox();
             this.storeList = new System.Windows.Forms.ListBox();
             this.salesPanel = new System.Windows.Forms.Panel();
+            this.setSalePago = new System.Windows.Forms.Button();
             this.CreateSaleBtn = new System.Windows.Forms.Button();
             this.stateCheck = new System.Windows.Forms.CheckBox();
             this.idOfVenda = new System.Windows.Forms.Label();
@@ -55,37 +57,60 @@
             this.Caixaslist = new System.Windows.Forms.ListBox();
             this.salesList = new System.Windows.Forms.ListBox();
             this.createSalePanel = new System.Windows.Forms.Panel();
+            this.CaixaVendaSizeBoxDrop = new System.Windows.Forms.ComboBox();
+            this.CaixaVendaVariedadeBoxDrop = new System.Windows.Forms.ComboBox();
+            this.vendacreatestateDrop = new System.Windows.Forms.ComboBox();
+            this.vendacreatestoreDrop = new System.Windows.Forms.ComboBox();
             this.CaixasInVendaCreateList = new System.Windows.Forms.ListBox();
             this.addCaixatoVenda = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.caixaVendaPesoBox = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.CaixaVendaSizeBox = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.CaixaVendaVariedadeBox = new System.Windows.Forms.TextBox();
             this.cancelVenda = new System.Windows.Forms.Button();
             this.vendaComfirm = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.vendacreatestate = new System.Windows.Forms.TextBox();
-            this.vendacreatestore = new System.Windows.Forms.TextBox();
             this.reservationPanel = new System.Windows.Forms.Panel();
-            this.VariedadesPanel = new System.Windows.Forms.Panel();
-            this.label13 = new System.Windows.Forms.Label();
-            this.listVarietys = new System.Windows.Forms.ListBox();
             this.listtipocReserva = new System.Windows.Forms.ListBox();
             this.label12 = new System.Windows.Forms.Label();
             this.listReservations = new System.Windows.Forms.ListBox();
-            this.setSalePago = new System.Windows.Forms.Button();
-            this.CurasAplicadasVariedade = new System.Windows.Forms.ListBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.listFito = new System.Windows.Forms.ListBox();
+            this.VariedadesPanel = new System.Windows.Forms.Panel();
+            this.curaalpicarbtn = new System.Windows.Forms.Button();
+            this.variatyHeader = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
+            this.listFito = new System.Windows.Forms.ListBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.CurasAplicadasVariedade = new System.Windows.Forms.ListBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.listVarietys = new System.Windows.Forms.ListBox();
+            this.aplicarCuraPanel = new System.Windows.Forms.Panel();
+            this.CancelCura = new System.Windows.Forms.Button();
+            this.addCura = new System.Windows.Forms.Button();
+            this.CaixaVendaVariedadeBoxDrop2 = new System.Windows.Forms.ComboBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.fitoDrop = new System.Windows.Forms.ComboBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.dateChoseCura = new System.Windows.Forms.DateTimePicker();
+            this.setDispBtn = new System.Windows.Forms.Button();
+            this.Painel_de_disp = new System.Windows.Forms.Panel();
+            this.listTipoCaixaAvilable = new System.Windows.Forms.ListBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.dispVar = new System.Windows.Forms.ComboBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.sizeDropDis = new System.Windows.Forms.ComboBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.dispText = new System.Windows.Forms.TextBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.apudateBtn = new System.Windows.Forms.Button();
             this.storesPanel.SuspendLayout();
             this.salesPanel.SuspendLayout();
             this.createSalePanel.SuspendLayout();
             this.reservationPanel.SuspendLayout();
             this.VariedadesPanel.SuspendLayout();
+            this.aplicarCuraPanel.SuspendLayout();
+            this.Painel_de_disp.SuspendLayout();
             this.SuspendLayout();
             // 
             // storeButton
@@ -130,6 +155,7 @@
             // 
             // storesPanel
             // 
+            this.storesPanel.Controls.Add(this.DeleteStore);
             this.storesPanel.Controls.Add(this.cancelStoreC);
             this.storesPanel.Controls.Add(this.createStoreButton);
             this.storesPanel.Controls.Add(this.newStoreStore);
@@ -144,11 +170,22 @@
             this.storesPanel.Controls.Add(this.label2);
             this.storesPanel.Controls.Add(this.storeNameBox);
             this.storesPanel.Controls.Add(this.storeList);
-            this.storesPanel.Location = new System.Drawing.Point(11, 66);
+            this.storesPanel.Location = new System.Drawing.Point(11, 78);
             this.storesPanel.Margin = new System.Windows.Forms.Padding(2);
             this.storesPanel.Name = "storesPanel";
-            this.storesPanel.Size = new System.Drawing.Size(1386, 522);
+            this.storesPanel.Size = new System.Drawing.Size(1386, 510);
             this.storesPanel.TabIndex = 4;
+            // 
+            // DeleteStore
+            // 
+            this.DeleteStore.Location = new System.Drawing.Point(121, 452);
+            this.DeleteStore.Margin = new System.Windows.Forms.Padding(2);
+            this.DeleteStore.Name = "DeleteStore";
+            this.DeleteStore.Size = new System.Drawing.Size(82, 27);
+            this.DeleteStore.TabIndex = 14;
+            this.DeleteStore.Text = "Delete Store";
+            this.DeleteStore.UseVisualStyleBackColor = true;
+            this.DeleteStore.Click += new System.EventHandler(this.DeleteStore_Click);
             // 
             // cancelStoreC
             // 
@@ -290,11 +327,22 @@
             this.salesPanel.Controls.Add(this.label1);
             this.salesPanel.Controls.Add(this.Caixaslist);
             this.salesPanel.Controls.Add(this.salesList);
-            this.salesPanel.Location = new System.Drawing.Point(6, 66);
+            this.salesPanel.Location = new System.Drawing.Point(6, 80);
             this.salesPanel.Margin = new System.Windows.Forms.Padding(2);
             this.salesPanel.Name = "salesPanel";
-            this.salesPanel.Size = new System.Drawing.Size(1403, 515);
+            this.salesPanel.Size = new System.Drawing.Size(1403, 501);
             this.salesPanel.TabIndex = 1;
+            // 
+            // setSalePago
+            // 
+            this.setSalePago.Location = new System.Drawing.Point(152, 392);
+            this.setSalePago.Name = "setSalePago";
+            this.setSalePago.Size = new System.Drawing.Size(114, 45);
+            this.setSalePago.TabIndex = 6;
+            this.setSalePago.Text = "Set sale to Pago";
+            this.setSalePago.UseVisualStyleBackColor = true;
+            this.setSalePago.Visible = false;
+            this.setSalePago.Click += new System.EventHandler(this.setSalePago_Click);
             // 
             // CreateSaleBtn
             // 
@@ -361,25 +409,57 @@
             // 
             // createSalePanel
             // 
+            this.createSalePanel.Controls.Add(this.CaixaVendaSizeBoxDrop);
+            this.createSalePanel.Controls.Add(this.CaixaVendaVariedadeBoxDrop);
+            this.createSalePanel.Controls.Add(this.vendacreatestateDrop);
+            this.createSalePanel.Controls.Add(this.vendacreatestoreDrop);
             this.createSalePanel.Controls.Add(this.CaixasInVendaCreateList);
             this.createSalePanel.Controls.Add(this.addCaixatoVenda);
             this.createSalePanel.Controls.Add(this.label11);
             this.createSalePanel.Controls.Add(this.caixaVendaPesoBox);
             this.createSalePanel.Controls.Add(this.label10);
-            this.createSalePanel.Controls.Add(this.CaixaVendaSizeBox);
             this.createSalePanel.Controls.Add(this.label9);
-            this.createSalePanel.Controls.Add(this.CaixaVendaVariedadeBox);
             this.createSalePanel.Controls.Add(this.cancelVenda);
             this.createSalePanel.Controls.Add(this.vendaComfirm);
             this.createSalePanel.Controls.Add(this.label8);
             this.createSalePanel.Controls.Add(this.label7);
-            this.createSalePanel.Controls.Add(this.vendacreatestate);
-            this.createSalePanel.Controls.Add(this.vendacreatestore);
-            this.createSalePanel.Location = new System.Drawing.Point(4, 64);
+            this.createSalePanel.Location = new System.Drawing.Point(4, 78);
             this.createSalePanel.Margin = new System.Windows.Forms.Padding(2);
             this.createSalePanel.Name = "createSalePanel";
-            this.createSalePanel.Size = new System.Drawing.Size(1403, 515);
+            this.createSalePanel.Size = new System.Drawing.Size(1403, 501);
             this.createSalePanel.TabIndex = 5;
+            // 
+            // CaixaVendaSizeBoxDrop
+            // 
+            this.CaixaVendaSizeBoxDrop.FormattingEnabled = true;
+            this.CaixaVendaSizeBoxDrop.Location = new System.Drawing.Point(259, 86);
+            this.CaixaVendaSizeBoxDrop.Name = "CaixaVendaSizeBoxDrop";
+            this.CaixaVendaSizeBoxDrop.Size = new System.Drawing.Size(241, 21);
+            this.CaixaVendaSizeBoxDrop.TabIndex = 17;
+            // 
+            // CaixaVendaVariedadeBoxDrop
+            // 
+            this.CaixaVendaVariedadeBoxDrop.FormattingEnabled = true;
+            this.CaixaVendaVariedadeBoxDrop.Location = new System.Drawing.Point(259, 46);
+            this.CaixaVendaVariedadeBoxDrop.Name = "CaixaVendaVariedadeBoxDrop";
+            this.CaixaVendaVariedadeBoxDrop.Size = new System.Drawing.Size(241, 21);
+            this.CaixaVendaVariedadeBoxDrop.TabIndex = 16;
+            // 
+            // vendacreatestateDrop
+            // 
+            this.vendacreatestateDrop.FormattingEnabled = true;
+            this.vendacreatestateDrop.Location = new System.Drawing.Point(32, 85);
+            this.vendacreatestateDrop.Name = "vendacreatestateDrop";
+            this.vendacreatestateDrop.Size = new System.Drawing.Size(161, 21);
+            this.vendacreatestateDrop.TabIndex = 15;
+            // 
+            // vendacreatestoreDrop
+            // 
+            this.vendacreatestoreDrop.FormattingEnabled = true;
+            this.vendacreatestoreDrop.Location = new System.Drawing.Point(32, 44);
+            this.vendacreatestoreDrop.Name = "vendacreatestoreDrop";
+            this.vendacreatestoreDrop.Size = new System.Drawing.Size(161, 21);
+            this.vendacreatestoreDrop.TabIndex = 14;
             // 
             // CaixasInVendaCreateList
             // 
@@ -431,14 +511,6 @@
             this.label10.TabIndex = 9;
             this.label10.Text = "Size";
             // 
-            // CaixaVendaSizeBox
-            // 
-            this.CaixaVendaSizeBox.Location = new System.Drawing.Point(257, 85);
-            this.CaixaVendaSizeBox.Margin = new System.Windows.Forms.Padding(2);
-            this.CaixaVendaSizeBox.Name = "CaixaVendaSizeBox";
-            this.CaixaVendaSizeBox.Size = new System.Drawing.Size(243, 20);
-            this.CaixaVendaSizeBox.TabIndex = 8;
-            // 
             // label9
             // 
             this.label9.AutoSize = true;
@@ -448,14 +520,6 @@
             this.label9.Size = new System.Drawing.Size(72, 13);
             this.label9.TabIndex = 7;
             this.label9.Text = "Variedade(int)";
-            // 
-            // CaixaVendaVariedadeBox
-            // 
-            this.CaixaVendaVariedadeBox.Location = new System.Drawing.Point(257, 45);
-            this.CaixaVendaVariedadeBox.Margin = new System.Windows.Forms.Padding(2);
-            this.CaixaVendaVariedadeBox.Name = "CaixaVendaVariedadeBox";
-            this.CaixaVendaVariedadeBox.Size = new System.Drawing.Size(243, 20);
-            this.CaixaVendaVariedadeBox.TabIndex = 6;
             // 
             // cancelVenda
             // 
@@ -499,64 +563,15 @@
             this.label7.TabIndex = 2;
             this.label7.Text = "store";
             // 
-            // vendacreatestate
-            // 
-            this.vendacreatestate.Location = new System.Drawing.Point(31, 79);
-            this.vendacreatestate.Margin = new System.Windows.Forms.Padding(2);
-            this.vendacreatestate.Name = "vendacreatestate";
-            this.vendacreatestate.Size = new System.Drawing.Size(162, 20);
-            this.vendacreatestate.TabIndex = 1;
-            // 
-            // vendacreatestore
-            // 
-            this.vendacreatestore.Location = new System.Drawing.Point(31, 45);
-            this.vendacreatestore.Margin = new System.Windows.Forms.Padding(2);
-            this.vendacreatestore.Name = "vendacreatestore";
-            this.vendacreatestore.Size = new System.Drawing.Size(162, 20);
-            this.vendacreatestore.TabIndex = 0;
-            // 
             // reservationPanel
             // 
             this.reservationPanel.Controls.Add(this.listtipocReserva);
             this.reservationPanel.Controls.Add(this.label12);
             this.reservationPanel.Controls.Add(this.listReservations);
-            this.reservationPanel.Location = new System.Drawing.Point(4, 63);
+            this.reservationPanel.Location = new System.Drawing.Point(4, 78);
             this.reservationPanel.Name = "reservationPanel";
-            this.reservationPanel.Size = new System.Drawing.Size(1405, 522);
+            this.reservationPanel.Size = new System.Drawing.Size(1405, 507);
             this.reservationPanel.TabIndex = 6;
-            // 
-            // VariedadesPanel
-            // 
-            this.VariedadesPanel.Controls.Add(this.label15);
-            this.VariedadesPanel.Controls.Add(this.listFito);
-            this.VariedadesPanel.Controls.Add(this.label14);
-            this.VariedadesPanel.Controls.Add(this.CurasAplicadasVariedade);
-            this.VariedadesPanel.Controls.Add(this.label13);
-            this.VariedadesPanel.Controls.Add(this.listVarietys);
-            this.VariedadesPanel.Location = new System.Drawing.Point(4, 63);
-            this.VariedadesPanel.Name = "VariedadesPanel";
-            this.VariedadesPanel.Size = new System.Drawing.Size(1407, 525);
-            this.VariedadesPanel.TabIndex = 7;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(18, 15);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(60, 13);
-            this.label13.TabIndex = 11;
-            this.label13.Text = "Variedades";
-            // 
-            // listVarietys
-            // 
-            this.listVarietys.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.listVarietys.FormattingEnabled = true;
-            this.listVarietys.ItemHeight = 14;
-            this.listVarietys.Location = new System.Drawing.Point(9, 40);
-            this.listVarietys.Name = "listVarietys";
-            this.listVarietys.Size = new System.Drawing.Size(467, 410);
-            this.listVarietys.TabIndex = 10;
-            this.listVarietys.SelectedIndexChanged += new System.EventHandler(this.listVarietys_SelectedIndexChanged);
             // 
             // listtipocReserva
             // 
@@ -588,34 +603,50 @@
             this.listReservations.TabIndex = 7;
             this.listReservations.SelectedIndexChanged += new System.EventHandler(this.listReservations_SelectedIndexChanged);
             // 
-            // setSalePago
+            // VariedadesPanel
             // 
-            this.setSalePago.Location = new System.Drawing.Point(152, 392);
-            this.setSalePago.Name = "setSalePago";
-            this.setSalePago.Size = new System.Drawing.Size(114, 45);
-            this.setSalePago.TabIndex = 6;
-            this.setSalePago.Text = "Set sale to Pago";
-            this.setSalePago.UseVisualStyleBackColor = true;
-            this.setSalePago.Click += new System.EventHandler(this.setSalePago_Click);
+            this.VariedadesPanel.Controls.Add(this.curaalpicarbtn);
+            this.VariedadesPanel.Controls.Add(this.variatyHeader);
+            this.VariedadesPanel.Controls.Add(this.label15);
+            this.VariedadesPanel.Controls.Add(this.listFito);
+            this.VariedadesPanel.Controls.Add(this.label14);
+            this.VariedadesPanel.Controls.Add(this.CurasAplicadasVariedade);
+            this.VariedadesPanel.Controls.Add(this.label13);
+            this.VariedadesPanel.Controls.Add(this.listVarietys);
+            this.VariedadesPanel.Location = new System.Drawing.Point(2, 78);
+            this.VariedadesPanel.Name = "VariedadesPanel";
+            this.VariedadesPanel.Size = new System.Drawing.Size(1407, 510);
+            this.VariedadesPanel.TabIndex = 7;
             // 
-            // CurasAplicadasVariedade
+            // curaalpicarbtn
             // 
-            this.CurasAplicadasVariedade.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CurasAplicadasVariedade.FormattingEnabled = true;
-            this.CurasAplicadasVariedade.ItemHeight = 14;
-            this.CurasAplicadasVariedade.Location = new System.Drawing.Point(512, 40);
-            this.CurasAplicadasVariedade.Name = "CurasAplicadasVariedade";
-            this.CurasAplicadasVariedade.Size = new System.Drawing.Size(318, 410);
-            this.CurasAplicadasVariedade.TabIndex = 12;
+            this.curaalpicarbtn.Location = new System.Drawing.Point(512, 459);
+            this.curaalpicarbtn.Name = "curaalpicarbtn";
+            this.curaalpicarbtn.Size = new System.Drawing.Size(120, 34);
+            this.curaalpicarbtn.TabIndex = 17;
+            this.curaalpicarbtn.Text = "Aplicar Cura";
+            this.curaalpicarbtn.UseVisualStyleBackColor = true;
+            this.curaalpicarbtn.UseWaitCursor = true;
+            this.curaalpicarbtn.Click += new System.EventHandler(this.curaalpicarbtn_Click);
             // 
-            // label14
+            // variatyHeader
             // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(509, 17);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(162, 13);
-            this.label14.TabIndex = 13;
-            this.label14.Text = "Curas Aplicadas numa variedade";
+            this.variatyHeader.AutoSize = true;
+            this.variatyHeader.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.variatyHeader.Location = new System.Drawing.Point(10, 24);
+            this.variatyHeader.Name = "variatyHeader";
+            this.variatyHeader.Size = new System.Drawing.Size(77, 14);
+            this.variatyHeader.TabIndex = 16;
+            this.variatyHeader.Text = "Variedades";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(846, 24);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(81, 13);
+            this.label15.TabIndex = 15;
+            this.label15.Text = "fitofarmaceutics";
             // 
             // listFito
             // 
@@ -627,29 +658,255 @@
             this.listFito.Size = new System.Drawing.Size(457, 410);
             this.listFito.TabIndex = 14;
             // 
-            // label15
+            // label14
             // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(846, 24);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(81, 13);
-            this.label15.TabIndex = 15;
-            this.label15.Text = "fitofarmaceutics";
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(509, 17);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(162, 13);
+            this.label14.TabIndex = 13;
+            this.label14.Text = "Curas Aplicadas numa variedade";
+            // 
+            // CurasAplicadasVariedade
+            // 
+            this.CurasAplicadasVariedade.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CurasAplicadasVariedade.FormattingEnabled = true;
+            this.CurasAplicadasVariedade.ItemHeight = 14;
+            this.CurasAplicadasVariedade.Location = new System.Drawing.Point(512, 40);
+            this.CurasAplicadasVariedade.Name = "CurasAplicadasVariedade";
+            this.CurasAplicadasVariedade.Size = new System.Drawing.Size(318, 410);
+            this.CurasAplicadasVariedade.TabIndex = 12;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(12, 8);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(60, 13);
+            this.label13.TabIndex = 11;
+            this.label13.Text = "Variedades";
+            // 
+            // listVarietys
+            // 
+            this.listVarietys.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listVarietys.FormattingEnabled = true;
+            this.listVarietys.ItemHeight = 14;
+            this.listVarietys.Location = new System.Drawing.Point(9, 40);
+            this.listVarietys.Name = "listVarietys";
+            this.listVarietys.Size = new System.Drawing.Size(467, 410);
+            this.listVarietys.TabIndex = 10;
+            this.listVarietys.SelectedIndexChanged += new System.EventHandler(this.listVarietys_SelectedIndexChanged);
+            // 
+            // aplicarCuraPanel
+            // 
+            this.aplicarCuraPanel.Controls.Add(this.CancelCura);
+            this.aplicarCuraPanel.Controls.Add(this.addCura);
+            this.aplicarCuraPanel.Controls.Add(this.CaixaVendaVariedadeBoxDrop2);
+            this.aplicarCuraPanel.Controls.Add(this.label18);
+            this.aplicarCuraPanel.Controls.Add(this.fitoDrop);
+            this.aplicarCuraPanel.Controls.Add(this.label17);
+            this.aplicarCuraPanel.Controls.Add(this.label16);
+            this.aplicarCuraPanel.Controls.Add(this.dateChoseCura);
+            this.aplicarCuraPanel.Location = new System.Drawing.Point(509, 67);
+            this.aplicarCuraPanel.Name = "aplicarCuraPanel";
+            this.aplicarCuraPanel.Size = new System.Drawing.Size(333, 505);
+            this.aplicarCuraPanel.TabIndex = 8;
+            // 
+            // CancelCura
+            // 
+            this.CancelCura.Location = new System.Drawing.Point(161, 206);
+            this.CancelCura.Name = "CancelCura";
+            this.CancelCura.Size = new System.Drawing.Size(94, 29);
+            this.CancelCura.TabIndex = 21;
+            this.CancelCura.Text = "Cancel";
+            this.CancelCura.UseVisualStyleBackColor = true;
+            this.CancelCura.Click += new System.EventHandler(this.CancelCura_Click);
+            // 
+            // addCura
+            // 
+            this.addCura.Location = new System.Drawing.Point(51, 206);
+            this.addCura.Name = "addCura";
+            this.addCura.Size = new System.Drawing.Size(83, 29);
+            this.addCura.TabIndex = 20;
+            this.addCura.Text = "Accept";
+            this.addCura.UseVisualStyleBackColor = true;
+            this.addCura.Click += new System.EventHandler(this.addCura_Click);
+            // 
+            // CaixaVendaVariedadeBoxDrop2
+            // 
+            this.CaixaVendaVariedadeBoxDrop2.FormattingEnabled = true;
+            this.CaixaVendaVariedadeBoxDrop2.Location = new System.Drawing.Point(31, 142);
+            this.CaixaVendaVariedadeBoxDrop2.Name = "CaixaVendaVariedadeBoxDrop2";
+            this.CaixaVendaVariedadeBoxDrop2.Size = new System.Drawing.Size(213, 21);
+            this.CaixaVendaVariedadeBoxDrop2.TabIndex = 19;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(32, 121);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(55, 13);
+            this.label18.TabIndex = 18;
+            this.label18.Text = "Variedade";
+            // 
+            // fitoDrop
+            // 
+            this.fitoDrop.FormattingEnabled = true;
+            this.fitoDrop.Location = new System.Drawing.Point(31, 88);
+            this.fitoDrop.Name = "fitoDrop";
+            this.fitoDrop.Size = new System.Drawing.Size(213, 21);
+            this.fitoDrop.TabIndex = 17;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(32, 63);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(82, 13);
+            this.label17.TabIndex = 16;
+            this.label17.Text = "FitoFarmaceutic";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(32, 17);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(30, 13);
+            this.label16.TabIndex = 15;
+            this.label16.Text = "Data";
+            // 
+            // dateChoseCura
+            // 
+            this.dateChoseCura.Location = new System.Drawing.Point(35, 32);
+            this.dateChoseCura.Margin = new System.Windows.Forms.Padding(2);
+            this.dateChoseCura.Name = "dateChoseCura";
+            this.dateChoseCura.Size = new System.Drawing.Size(209, 20);
+            this.dateChoseCura.TabIndex = 14;
+            // 
+            // setDispBtn
+            // 
+            this.setDispBtn.Location = new System.Drawing.Point(492, 12);
+            this.setDispBtn.Name = "setDispBtn";
+            this.setDispBtn.Size = new System.Drawing.Size(141, 49);
+            this.setDispBtn.TabIndex = 9;
+            this.setDispBtn.Text = "Disponiblidades de Tipos";
+            this.setDispBtn.UseVisualStyleBackColor = true;
+            this.setDispBtn.Click += new System.EventHandler(this.setDispBtn_Click);
+            // 
+            // Painel_de_disp
+            // 
+            this.Painel_de_disp.Controls.Add(this.apudateBtn);
+            this.Painel_de_disp.Controls.Add(this.label22);
+            this.Painel_de_disp.Controls.Add(this.dispText);
+            this.Painel_de_disp.Controls.Add(this.label21);
+            this.Painel_de_disp.Controls.Add(this.sizeDropDis);
+            this.Painel_de_disp.Controls.Add(this.label20);
+            this.Painel_de_disp.Controls.Add(this.dispVar);
+            this.Painel_de_disp.Controls.Add(this.label19);
+            this.Painel_de_disp.Controls.Add(this.listTipoCaixaAvilable);
+            this.Painel_de_disp.Location = new System.Drawing.Point(2, 78);
+            this.Painel_de_disp.Name = "Painel_de_disp";
+            this.Painel_de_disp.Size = new System.Drawing.Size(1411, 507);
+            this.Painel_de_disp.TabIndex = 10;
+            // 
+            // listTipoCaixaAvilable
+            // 
+            this.listTipoCaixaAvilable.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listTipoCaixaAvilable.FormattingEnabled = true;
+            this.listTipoCaixaAvilable.ItemHeight = 14;
+            this.listTipoCaixaAvilable.Location = new System.Drawing.Point(25, 28);
+            this.listTipoCaixaAvilable.Name = "listTipoCaixaAvilable";
+            this.listTipoCaixaAvilable.Size = new System.Drawing.Size(467, 410);
+            this.listTipoCaixaAvilable.TabIndex = 11;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(25, 12);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(166, 13);
+            this.label19.TabIndex = 12;
+            this.label19.Text = "Tipo De Caixa e Suas Variedades";
+            // 
+            // dispVar
+            // 
+            this.dispVar.FormattingEnabled = true;
+            this.dispVar.Location = new System.Drawing.Point(537, 50);
+            this.dispVar.Name = "dispVar";
+            this.dispVar.Size = new System.Drawing.Size(239, 21);
+            this.dispVar.TabIndex = 13;
+            this.dispVar.SelectedIndexChanged += new System.EventHandler(this.dispVar_SelectedIndexChanged);
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(539, 34);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(55, 13);
+            this.label20.TabIndex = 14;
+            this.label20.Text = "Variedade";
+            // 
+            // sizeDropDis
+            // 
+            this.sizeDropDis.FormattingEnabled = true;
+            this.sizeDropDis.Location = new System.Drawing.Point(538, 102);
+            this.sizeDropDis.Name = "sizeDropDis";
+            this.sizeDropDis.Size = new System.Drawing.Size(239, 21);
+            this.sizeDropDis.TabIndex = 15;
+            this.sizeDropDis.SelectedIndexChanged += new System.EventHandler(this.sizeDropDis_SelectedIndexChanged);
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(539, 86);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(25, 13);
+            this.label21.TabIndex = 16;
+            this.label21.Text = "size";
+            // 
+            // dispText
+            // 
+            this.dispText.Location = new System.Drawing.Point(538, 158);
+            this.dispText.Name = "dispText";
+            this.dispText.Size = new System.Drawing.Size(239, 20);
+            this.dispText.TabIndex = 17;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(539, 142);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(78, 13);
+            this.label22.TabIndex = 18;
+            this.label22.Text = "Disponibilidade";
+            // 
+            // apudateBtn
+            // 
+            this.apudateBtn.Location = new System.Drawing.Point(616, 201);
+            this.apudateBtn.Name = "apudateBtn";
+            this.apudateBtn.Size = new System.Drawing.Size(85, 28);
+            this.apudateBtn.TabIndex = 19;
+            this.apudateBtn.Text = "Update";
+            this.apudateBtn.UseVisualStyleBackColor = true;
+            this.apudateBtn.Click += new System.EventHandler(this.apudateBtn_Click);
             // 
             // AdmPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1425, 592);
+            this.Controls.Add(this.setDispBtn);
             this.Controls.Add(this.VariedadesBtn);
             this.Controls.Add(this.reservationsButton);
             this.Controls.Add(this.salesButton);
             this.Controls.Add(this.storeButton);
-            this.Controls.Add(this.VariedadesPanel);
+            this.Controls.Add(this.aplicarCuraPanel);
             this.Controls.Add(this.reservationPanel);
             this.Controls.Add(this.createSalePanel);
+            this.Controls.Add(this.Painel_de_disp);
             this.Controls.Add(this.salesPanel);
             this.Controls.Add(this.storesPanel);
+            this.Controls.Add(this.VariedadesPanel);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "AdmPanel";
             this.Text = "Form2";
@@ -663,6 +920,10 @@
             this.reservationPanel.PerformLayout();
             this.VariedadesPanel.ResumeLayout(false);
             this.VariedadesPanel.PerformLayout();
+            this.aplicarCuraPanel.ResumeLayout(false);
+            this.aplicarCuraPanel.PerformLayout();
+            this.Painel_de_disp.ResumeLayout(false);
+            this.Painel_de_disp.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -696,17 +957,13 @@
         private System.Windows.Forms.Button createStoreButton;
         private System.Windows.Forms.Panel createSalePanel;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox vendacreatestate;
-        private System.Windows.Forms.TextBox vendacreatestore;
         private System.Windows.Forms.Button vendaComfirm;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button cancelVenda;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox caixaVendaPesoBox;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox CaixaVendaSizeBox;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox CaixaVendaVariedadeBox;
         private System.Windows.Forms.Button addCaixatoVenda;
         private System.Windows.Forms.ListBox CaixasInVendaCreateList;
         private System.Windows.Forms.Button CreateSaleBtn;
@@ -722,5 +979,32 @@
         private System.Windows.Forms.ListBox CurasAplicadasVariedade;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.ListBox listFito;
+        private System.Windows.Forms.ComboBox vendacreatestoreDrop;
+        private System.Windows.Forms.ComboBox vendacreatestateDrop;
+        private System.Windows.Forms.ComboBox CaixaVendaVariedadeBoxDrop;
+        private System.Windows.Forms.ComboBox CaixaVendaSizeBoxDrop;
+        private System.Windows.Forms.Button DeleteStore;
+        private System.Windows.Forms.Label variatyHeader;
+        private System.Windows.Forms.Panel aplicarCuraPanel;
+        private System.Windows.Forms.Button curaalpicarbtn;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.DateTimePicker dateChoseCura;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.ComboBox fitoDrop;
+        private System.Windows.Forms.ComboBox CaixaVendaVariedadeBoxDrop2;
+        private System.Windows.Forms.Button CancelCura;
+        private System.Windows.Forms.Button addCura;
+        private System.Windows.Forms.Button setDispBtn;
+        private System.Windows.Forms.Panel Painel_de_disp;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.ListBox listTipoCaixaAvilable;
+        private System.Windows.Forms.ComboBox dispVar;
+        private System.Windows.Forms.Button apudateBtn;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.TextBox dispText;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.ComboBox sizeDropDis;
+        private System.Windows.Forms.Label label20;
     }
 }

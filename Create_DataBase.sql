@@ -16,6 +16,7 @@ CREATE TABLE LOJA (
 	[address]		VARCHAR(64),
 	phone			VARCHAR(9)		NOT NULL,
 	nif				INT,
+	[disabled]		BIT			NOT NULL	DEFAULT 0,
 	PRIMARY KEY (id)
 	);
 

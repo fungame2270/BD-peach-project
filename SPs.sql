@@ -4,13 +4,27 @@ DROP PROCEDURE IF EXISTS getVendas
 DROP PROCEDURE IF EXISTS getCaixasOfSale
 DROP PROCEDURE IF EXISTS addStore
 DROP PROCEDURE IF EXISTS newVenda
-DROP PROCEDURE IF EXISTS addToVenda
 DROP PROCEDURE IF EXISTS getReservas
 DROP PROCEDURE IF EXISTS getTipoCaixasRes
 DROP PROCEDURE IF EXISTS getVariedadesCuraState
 DROP PROCEDURE IF EXISTS updateVendaState
 DROP PROCEDURE IF EXISTS curasNaVariedade
 DROP PROCEDURE IF EXISTS getFito
+DROP PROCEDURE IF EXISTS GetStoreNames
+DROP PROCEDURE IF EXISTS DeleteReserva
+DROP PROCEDURE IF EXISTS getStoreRes
+DROP PROCEDURE IF EXISTS GetVariatyNames
+DROP PROCEDURE IF EXISTS deleteStore
+DROP PROCEDURE IF EXISTS aplicarCura
+DROP PROCEDURE IF EXISTS seeAvailability
+DROP PROCEDURE IF EXISTS getAvailabilityOf
+DROP PROCEDURE IF EXISTS updateAvailabilityOf
+DROP PROCEDURE IF EXISTS newReserva
+DROP TYPE IF EXISTS dbo.CaixaParamaterSp
+DROP TYPE IF EXISTS dbo.TipoCaixaParamaterSp
+
+
+
 
 
 
@@ -32,6 +46,7 @@ go
 CREATE PROC getStores
 AS
 Select * from LOJA
+WHERE [disabled] = 0
 go
 
 
@@ -43,6 +58,7 @@ IF @state IS NULL AND @store IS NULL
 	FROM VENDA JOIN LOJA ON VENDA.store = LOJA.id 
 	JOIN CAIXA on CAIXA.sale = VENDA.id
 	JOIN TIPODECAIXA on CAIXA.code = TIPODECAIXA.code AND CAIXA.size = TIPODECAIXA.size
+	WHERE LOJA.[disabled] = 0
 	GROUP BY LOJA.[name],VENDA.store,Venda.id, [state],[date]
 	RETURN
 	END
@@ -52,7 +68,7 @@ IF @store IS NULL
 	FROM VENDA JOIN LOJA ON VENDA.store = LOJA.id 
 	JOIN CAIXA on CAIXA.sale = VENDA.id
 	JOIN TIPODECAIXA on CAIXA.code = TIPODECAIXA.code AND CAIXA.size = TIPODECAIXA.size
-	WHERE VENDA.[state] = @state
+	WHERE VENDA.[state] = @state AND LOJA.[disabled] = 0
 	GROUP BY LOJA.[name],VENDA.store,Venda.id, [state],[date]
 	RETURN
 	END
@@ -62,7 +78,7 @@ IF @state IS NULL
 	FROM VENDA JOIN LOJA ON VENDA.store = LOJA.id 
 	JOIN CAIXA on CAIXA.sale = VENDA.id
 	JOIN TIPODECAIXA on CAIXA.code = TIPODECAIXA.code AND CAIXA.size = TIPODECAIXA.size
-	WHERE VENDA.store = @store
+	WHERE VENDA.store = @store AND LOJA.[disabled] = 0
 	GROUP BY LOJA.[name],VENDA.store,Venda.id, [state],[date]
 	RETURN
 	END
@@ -70,7 +86,7 @@ SELECT LOJA.[name],VENDA.store,Venda.id, [state],[date],SUM(pricekg*Caixa.[weigh
 	FROM VENDA JOIN LOJA ON VENDA.store = LOJA.id 
 	JOIN CAIXA on CAIXA.sale = VENDA.id
 	JOIN TIPODECAIXA on CAIXA.code = TIPODECAIXA.code AND CAIXA.size = TIPODECAIXA.size
-	WHERE VENDA.store = @store AND VENDA.[state] = @state 
+	WHERE VENDA.store = @store AND VENDA.[state] = @state AND LOJA.[disabled] = 0
 	GROUP BY LOJA.[name],VENDA.store,Venda.id, [state],[date]
 
 go
@@ -94,30 +110,76 @@ INSERT INTO LOJA (email, [name], [address], phone, nif) VALUES
 go
 
 
-CREATE PROC newVenda (@state VARCHAR(7),@date DATE,@store INT,@venda INT OUTPUT)
+CREATE TYPE CaixaParamaterSp AS TABLE(
+[weight]	DECIMAL(4,2),
+code		INT,
+size		VARCHAR(6)
+);
+go
+CREATE PROC newVenda(@state VARCHAR(7),@date DATE,@store INT,@caixas dbo.CaixaParamaterSp READONLY)
 AS
 BEGIN
-INSERT INTO VENDA ([state],[date],[store]) VALUES
-	(@state,@date,@store);
+	BEGIN TRANSACTION
+	SAVE TRANSACTION SavePoint;
+	BEGIN TRY
+		INSERT INTO VENDA ([state],[date],[store]) VALUES
+		(@state,@date,@store);
 
-set @venda = SCOPE_IDENTITY()
+		declare @venda INT = SCOPE_IDENTITY()
+
+		INSERT INTO CAIXA(sale,[weight],code,size)
+		SELECT @venda,* FROM @caixas
+		COMMIT TRANSACTION 
+	END TRY
+	BEGIN CATCH
+        IF @@TRANCOUNT > 0
+        BEGIN
+            ROLLBACK TRANSACTION SavePoint;
+        END
+    END CATCH
 END
 go
 
-
-CREATE PROC addToVenda(@sale INT,@weigth DECIMAL(4,2),@code INT,@size VARCHAR(6))
-AS
-INSERT INTO CAIXA(sale,[weight],code,size) VALUES
-	(@sale,@weigth,@code,@size);
+CREATE TYPE TipoCaixaParamaterSp AS TABLE(
+code		INT,
+size		VARCHAR(6),
+qty			INT
+);
 go
 
+CREATE PROC newReserva(@date DATE,@store INT,@caixas dbo.TipoCaixaParamaterSp READONLY)
+AS
+BEGIN
+	BEGIN TRANSACTION
+	SAVE TRANSACTION SavePoint;
+	BEGIN TRY
+		INSERT INTO RESERVA([date],[store]) VALUES
+		(@date,@store);
 
+		declare @res INT = SCOPE_IDENTITY()
+
+		INSERT INTO TIPOCAIXARESERVA(reservation,code,size,quantity)
+		SELECT @res,* FROM @caixas
+		COMMIT TRANSACTION 
+	END TRY
+	BEGIN CATCH
+        IF @@TRANCOUNT > 0
+        BEGIN
+            ROLLBACK TRANSACTION SavePoint;
+        END
+    END CATCH
+END
+
+
+
+go
 CREATE PROC getReservas(@store INT = NULL)
 AS
 IF @store IS NULL
 BEGIN
 SELECT R.id,R.[date],R.store,LOJA.[name],sum(T.quantity) as quantity
 FROM RESERVA AS R JOIN LOJA on R.store = LOJA.id JOIN TIPOCAIXARESERVA as T on T.reservation = R.id
+WHERE LOJA.[disabled] = 0
 Group by  R.id,R.[date],R.store,LOJA.[name]
 END
 ELSE
@@ -166,23 +228,9 @@ go
 CREATE PROC getFito
 AS
 SELECT * FROM FITOFARMACEUTICOS
+go
 
-
----------------------
-
-ALTER PROCEDURE InsertIntoTabela
-    @id INT,
-    @size VARCHAR(50),
-    @quantidade INT,
-    @storeName VARCHAR(50)
-AS
-BEGIN
-    INSERT INTO TIPOCAIXARESERVA (id, size, quantidade, storeName)
-    VALUES (@id, @size, @quantidade, @storeName)
-END
-
-ALTER PROCEDURE help_me
-    @store INT
+CREATE PROCEDURE getStoreRes @store INT
 AS
 BEGIN
     IF @store IS NULL
@@ -191,69 +239,67 @@ BEGIN
         RETURN;
     END
     BEGIN
-         SELECT R.id, R.[date], R.store,TR.code, TR.size, TR.quantity --TR.code,
-		FROM RESERVA AS R
-		JOIN TIPOCAIXARESERVA AS TR ON R.store = TR.code
+        SELECT R.id, R.[date], R.store,TR.code, TR.size, TR.quantity
+		FROM RESERVA AS R JOIN TIPOCAIXARESERVA AS TR ON R.store = TR.code
 		WHERE R.store = @store;
     END
     
     
 END
-exec help_me @store=8
+go
 
-CREATE TRIGGER VerificarForData
-ON TIPOCAIXARESERVA -- Substitua "NomeDaTabela" pelo nome da tabela que deseja verificar
-AFTER INSERT, UPDATE
+CREATE PROCEDURE GetStoreNames
 AS
 BEGIN
-    -- Verificar a coluna de data na tabela inserida
-    IF EXISTS (
-        SELECT 1
-        FROM inserted
-        WHERE TBoxData IS NULL OR NOT TBoxData LIKE '[0-9][0-9] / [0-9][0-9] / [0-9][0-9][0-9][0-9]'
-    )
-    BEGIN
-        -- Lançar um erro se a data não estiver no formato desejado
-        RAISERROR ('A data deve estar no formato "número número / número número / número número número número".', 16, 1)
-        ROLLBACK TRANSACTION
-        RETURN
-    END
+    SELECT [name],id 
+	FROM LOJA
+	WHERE LOJA.[disabled] = 0
 END
+go
 
-
-
-Alter PROCEDURE GetStoreNames
+CREATE PROCEDURE GetVariatyNames
 AS
 BEGIN
-    SELECT [name],id FROM LOJA;
+    SELECT [name],code FROM VARIEDADE;
 END
+go
 
 CREATE PROCEDURE DeleteReserva
     @ReservaId INT
 AS
 BEGIN
     DELETE FROM RESERVA WHERE id = @ReservaId;
+	DELETE FROM TIPOCAIXARESERVA WHERE reservation = @ReservaId;
 END
+go
 
-CREATE PROCEDURE InsertReservation
-    @reservationDate DATE,
-    @storeId INT,
-    @code INT,
-    @size VARCHAR(6),
-    @quantity INT
+CREATE PROC deleteStore(@id INT)
 AS
 BEGIN
-    SET NOCOUNT ON;
-
-    -- Inserir na tabela peachProject.RESERVA
-    INSERT INTO RESERVA ([date], store)
-    VALUES (@reservationDate, @storeId);
-
-    -- Inserir na tabela peachProject.TIPOCAIXARESERVA
-    INSERT INTO TIPOCAIXARESERVA (code, size, quantity)
-    VALUES (@code, @size, @quantity);
+	DELETE FROM LOJA WHERE id = @id;
 END
+go
+CREATE PROC aplicarCura(@fito INT,@var INT,@date SMALLDATETIME)
+AS
+INSERT INTO CURAS VALUES
+	(@fito,@var,@date)
+go
 
+CREATE PROC seeAvailability
+AS
+SELECT [name],size,[availability],pricekg 
+FROM TIPODECAIXA JOIN VARIEDADE on TIPODECAIXA.code = VARIEDADE.code
+WHERE [availability] !=0
+go
 
-DROP PROCEDURE IF EXISTS InsertReservation;
-
+CREATE PROC getAvailabilityOf(@code INT,@SIZE VARCHAR(6),@disp INT OUTPUT)
+AS
+SELECT @disp = [availability] 
+FROM TIPODECAIXA JOIN VARIEDADE on TIPODECAIXA.code = VARIEDADE.code
+WHERE TIPODECAIXA.code = @code AND TIPODECAIXA.size = @SIZE
+go
+CREATE PROC updateAvailabilityOf(@code INT,@SIZE VARCHAR(6),@disp INT)
+AS
+UPDATE TIPODECAIXA
+SET [availability] = @disp
+WHERE code = @code AND size = @SIZE

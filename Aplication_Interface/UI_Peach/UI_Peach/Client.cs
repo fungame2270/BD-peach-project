@@ -11,25 +11,24 @@ namespace UI_Peach
     public partial class Client : Form
     {
         private SqlConnection conn;
-        private int CurrentStore;
-        private DataTable dataTable;
-        private List<Store> ClientList; // Declaração correta da lista
-        private SqlDataAdapter dataAdapter;
+        private int loggedStore;
+        private int CurrentSale;
+        private int currentRes;
 
         public Client(int storeIdx)
         {
             InitializeComponent();
-
-            ClientList = new List<Store>(); // Inicialização da lista
-       
-            LoadHistorico();
+            loggedStore = storeIdx;
+            loadCompras();
+            comprasPane.BringToFront();
         }
 
 
 
         private SqlConnection GetSGBDConnection()
         {
-            return new SqlConnection("Data Source = tcp:mednat.ieeta.pt\\SQLSERVER,8101;" + " uid = p5g7;" + "password =Paris1020Java ");
+            //return new SqlConnection("Data Source = THE_MACHINE\\SQLEXPRESS;" + "Initial Catalog = peachProject; uid = Teste;" + "password = booga");
+            return new SqlConnection("Data Source = tcp:mednat.ieeta.pt\\SQLSERVER, 8101; " + " uid = p5g7; " + "password = Paris1020Java ");
         }
 
         private bool VerifySGBDConnection()
@@ -43,411 +42,245 @@ namespace UI_Peach
             return conn.State == ConnectionState.Open;
         }
 
-        private void LoadHistorico()
+        private void comprasBtn_Click(object sender, EventArgs e)
+        {
+            comprasPane.BringToFront();
+            loadCompras();
+
+        }
+        private void loadCompras(String state = null)
         {
             if (!VerifySGBDConnection())
                 return;
-
-            SqlCommand cmd = new SqlCommand("EXEC dbo.getStores", conn);
+            SqlCommand cmd = new SqlCommand("dbo.getVendas", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@state", SqlDbType.VarChar, 7).Value = state;
+            cmd.Parameters.Add("@store", SqlDbType.Int).Value = loggedStore;
             SqlDataReader reader = cmd.ExecuteReader();
-            ClientList.Clear(); // Limpa a lista antes de preenchê-la novamente
+            list_compras.Items.Clear();
 
             while (reader.Read())
             {
-                Store store = new Store();
-                store.Id = reader["id"].ToString();
-                store.Name = reader["name"].ToString();
-                store.Email = reader["email"].ToString();
-                store.Phone = reader["phone"].ToString();
-                store.Address = reader["address"].ToString();
-                store.Nif = reader["nif"].ToString();
-                ClientList.Add(store); // Adiciona o objeto à lista
+                Sale S = new Sale();
+                S.Id = reader["id"].ToString();
+                S.State = reader["state"].ToString();
+                S.StoreName = reader["name"].ToString();
+                S.Date = reader["date"].ToString();
+                S.StoreId = reader["store"].ToString();
+                S.Price = reader["price"].ToString();
+                list_compras.Items.Add(S);
             }
+            CurrentSale = 0;
+            conn.Close();
+            showSaleCaixas();
 
-            CurrentStore = 0;
-            ShowClient();
-
-            reader.Close(); // Fecha o SqlDataReader
+        }
+        private void showSaleCaixas()
+        {
+            if (CurrentSale < 0) return;
+            Sale s = new Sale();
+            if (list_compras.Items.Count != 0)
+            {
+                s = (Sale)list_compras.Items[CurrentSale];
+                idOfVenda.Text = s.Id;
+                loadCaixas(int.Parse(s.Id));
+            }
+            else
+            {
+                Caixaslist.Items.Clear();
+            }
         }
 
-        private void ShowClient()
+        private void loadCaixas(int venda)
         {
-            if (CurrentStore < 0 || CurrentStore >= ClientList.Count) return;
+            if (!VerifySGBDConnection())
+                return;
+            SqlCommand cmd = new SqlCommand("getCaixasOfsale", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@venda", SqlDbType.Int).Value = venda;
+            SqlDataReader reader = cmd.ExecuteReader();
+            Caixaslist.Items.Clear();
+            while (reader.Read())
+            {
+                Caixa c = new Caixa();
+                c.VendaID = reader["venda"].ToString();
+                c.CaixaID = reader["id"].ToString();
+                c.Variedade = reader["name"].ToString();
+                c.Size = reader["size"].ToString();
+                c.Weight = reader["weight"].ToString();
+                c.Price = reader["price"].ToString();
+                Caixaslist.Items.Add(c);
+            }
+            conn.Close();
+        }
 
-            Store s = ClientList[CurrentStore];
+        private void list_compras_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (list_compras.SelectedIndex >= 0)
+            {
+                CurrentSale = list_compras.SelectedIndex;
+                Sale s = (Sale)list_compras.SelectedItem;
+                showSaleCaixas();
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            LoadHistorico();
+            resPanel.BringToFront();
+            loadRes();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void loadRes()
         {
-            panel1.Visible = false;
-            panel2.Visible = false;
-            panel3.Visible = true;
+            if (!VerifySGBDConnection())
+                return;
+            SqlCommand cmd = new SqlCommand("dbo.getReservas", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@store", SqlDbType.Int).Value = loggedStore;
+            SqlDataReader reader = cmd.ExecuteReader();
+            listReservations.Items.Clear();
 
-            int storeId = GetStoreIdForCurrentUser(); // Replace this with your actual logic to retrieve the store ID for the current user
-
-            string connectionString = "Data Source = tcp:mednat.ieeta.pt\\SQLSERVER,8101;" + " uid = p5g7;" + "password =Paris1020Java ";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            while (reader.Read())
             {
-                try
-                {
-                    // Create a new instance of the SqlDataAdapter
-                    dataAdapter = new SqlDataAdapter();
-
-                    // Set the SelectCommand to the stored procedure
-                    dataAdapter.SelectCommand = new SqlCommand("help_me", connection);
-                    dataAdapter.SelectCommand.CommandType = CommandType.StoredProcedure;
-                    dataAdapter.SelectCommand.Parameters.AddWithValue("@store", storeId);
-
-                    // Create a new DataTable
-                    dataTable = new DataTable();
-
-                    // Fill the DataTable with the data from the stored procedure
-                    dataAdapter.Fill(dataTable);
-
-                    // Set the DataTable as the data source for the DataGridView
-                    dataGridView2.DataSource = dataTable;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error: " + ex.Message);
-                }
+                Reservation S = new Reservation();
+                S.ID = reader["id"].ToString();
+                S.StoreName = reader["name"].ToString();
+                S.Date = reader["date"].ToString();
+                S.StoreId = reader["store"].ToString();
+                S.Quantaty = reader["quantity"].ToString();
+                listReservations.Items.Add(S);
             }
+            currentRes = 0;
+            conn.Close();
+            showResTCaixas();
+
+        }
+        private void showResTCaixas()
+        {
+            if (currentRes < 0) return;
+            if (listReservations.Items.Count == 0) return;
+            Reservation s = new Reservation();
+            s = (Reservation)listReservations.Items[currentRes];
+            idOfVenda.Text = s.ID;
+            loadTCaixasRes(int.Parse(s.ID));
+
         }
 
-
-        private void Historic_btn1_Click(object sender, EventArgs e)
+        private void loadTCaixasRes(int res)
         {
-            panel1.Visible = true;
-            panel2.Visible = false;
-            panel3.Visible = false;
-
-            // Get the store ID of the currently logged-in user
-            int storeId = GetStoreIdForCurrentUser(); // Replace this with your actual logic to retrieve the store ID for the current user
-
-            string connectionString = "Data Source = tcp:mednat.ieeta.pt\\SQLSERVER,8101;" + " uid = p5g7;" + "password =Paris1020Java ";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            if (!VerifySGBDConnection())
+                return;
+            SqlCommand cmd = new SqlCommand("getTipoCaixasRes", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@reserva", SqlDbType.Int).Value = res;
+            SqlDataReader reader = cmd.ExecuteReader();
+            listtipocReserva.Items.Clear();
+            while (reader.Read())
             {
-                try
-                {
-                    // Create a new instance of the SqlDataAdapter
-                    dataAdapter = new SqlDataAdapter();
-
-                    // Set the SelectCommand to the stored procedure
-                    dataAdapter.SelectCommand = new SqlCommand("help_me", connection);
-                    dataAdapter.SelectCommand.CommandType = CommandType.StoredProcedure;
-                    dataAdapter.SelectCommand.Parameters.AddWithValue("@store", storeId);
-
-                    // Create a new DataTable
-                    dataTable = new DataTable();
-
-                    // Fill the DataTable with the data from the stored procedure
-                    dataAdapter.Fill(dataTable);
-
-                    // Set the DataTable as the data source for the DataGridView
-                    dataGridView3.DataSource = dataTable;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error: " + ex.Message);
-                }
+                TipoCaixa T = new TipoCaixa();
+                T.Vcode = reader["code"].ToString();
+                T.Vname = reader["name"].ToString();
+                T.Size = reader["size"].ToString();
+                T.reservation = reader["reservation"].ToString();
+                T.Quantaty = reader["quantity"].ToString();
+                T.PriceKg = reader["pricekg"].ToString();
+                listtipocReserva.Items.Add(T);
             }
+            conn.Close();
         }
 
-        private int GetStoreIdForCurrentUser()
+        private void criar_res_Click(object sender, EventArgs e)
         {
-            return 8; //probelama ao ver qual é o user
-        }
-   
-        //aqui em baixo panel de inseir reverva
-    
-        private void Criar_rev_btn2_Click(object sender, EventArgs e)
-        {
-            panel2.Visible = true;
-            panel1.Visible = false;
-            panel3.Visible = false;
-
-            
-            
-            int storeId = GetStoreIdForCurrentUser(); // Replace this with your actual logic to retrieve the store ID for the current user
-
-            string connectionString = "Data Source = tcp:mednat.ieeta.pt\\SQLSERVER,8101;" + " uid = p5g7;" + "password =Paris1020Java ";
-
-            BtnName.Items.Clear();
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            createResPanel.BringToFront();
+            if (CaixaVendaVariedadeBoxDrop.Items.Count == 0)
             {
-
-
-               
-                try
+                if (!VerifySGBDConnection())
+                    return;
+                SqlCommand command = new SqlCommand("GetVariatyNames", conn);
+                command.CommandType = CommandType.StoredProcedure;
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    connection.Open();
-                    SqlCommand command = new SqlCommand("GetStoreNames", connection);
-                    command.CommandType = CommandType.StoredProcedure;
-                    SqlDataReader reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        Store S = new Store();
-                        S.Id = reader["id"].ToString();
-                        S.Name = reader["name"].ToString();
-                        BtnName.Items.Add(S);
-                    }
-                    reader.Close();
-                    connection.Close();
+                    Variadade S = new Variadade();
+                    S.Code = reader["code"].ToString();
+                    S.Name = reader["name"].ToString();
+                    CaixaVendaVariedadeBoxDrop.Items.Add(S);
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error: " + ex.Message);
-                }
+                reader.Close();
+                conn.Close();
+            }
+            if (CaixaVendaSizeBoxDrop.Items.Count == 0)
+            {
+                CaixaVendaSizeBoxDrop.Items.Add("SMALL");
+                CaixaVendaSizeBoxDrop.Items.Add("MEDIUM");
+                CaixaVendaSizeBoxDrop.Items.Add("BIG");
+            }
+            loadDisponibilidades();
 
+        }
 
-                try
-                {
-                    // Create a new instance of the SqlDataAdapter
-                    dataAdapter = new SqlDataAdapter();
+        private void addCaixatoVenda_Click(object sender, EventArgs e)
+        {
+            TipoCaixa c = new TipoCaixa();
+            Variadade v = CaixaVendaVariedadeBoxDrop.SelectedItem as Variadade;
+            c.Vcode = v.Code;
+            c.Vname= v.Name;
+            c.Size = CaixaVendaSizeBoxDrop.SelectedItem.ToString();
+            c.Quantaty = caixaVendaPesoBox.Text;
+            caixaVendaPesoBox.Text = "";
+            CaixaVendaSizeBoxDrop.SelectionLength = 0;
+            CaixaVendaVariedadeBoxDrop.SelectionLength = 0;
+            CaixasInVendaCreateList.Items.Add(c);
+        }
 
-                    // Set the SelectCommand to the stored procedure
-                    dataAdapter.SelectCommand = new SqlCommand("help_me", connection);
-                    dataAdapter.SelectCommand.CommandType = CommandType.StoredProcedure;
-                    dataAdapter.SelectCommand.Parameters.AddWithValue("@store", storeId);
+        private void cancelVenda_Click(object sender, EventArgs e)
+        {
+            CaixasInVendaCreateList.Items.Clear();
+        }
 
-                    // Create a new DataTable
-                    dataTable = new DataTable();
-
-                    // Fill the DataTable with the data from the stored procedure
-                    dataAdapter.Fill(dataTable);
-
-                    // Set the DataTable as the data source for the DataGridView
-                    dataGridView1.DataSource = dataTable;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error: " + ex.Message);
-                }
+        private void vendaComfirm_Click(object sender, EventArgs e)
+        {
+            if (!VerifySGBDConnection())
+                return;
+            DataTable dataTable = new DataTable();
+            dataTable.Columns.Add("code", typeof(Int32));
+            dataTable.Columns.Add("size", typeof(String));
+            dataTable.Columns.Add("qty", typeof(Int32));
+            foreach (TipoCaixa c in CaixasInVendaCreateList.Items)
+            {
+                dataTable.Rows.Add(c.Vcode, c.Size, c.Quantaty);
             }
 
 
+            SqlCommand cmd = new SqlCommand("newReserva", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@store", SqlDbType.Int).Value = loggedStore;
+            cmd.Parameters.Add("@date", SqlDbType.Date).Value = dateRes.Value.ToString();
+            SqlParameter sqlParam = cmd.Parameters.AddWithValue("@caixas", dataTable);
+            sqlParam.SqlDbType = SqlDbType.Structured;
+            cmd.ExecuteNonQuery();
+
+            conn.Close();
+            CaixasInVendaCreateList.Items.Clear();
         }
-
-        private void dataGridView2_CellContentClick()
+        private void loadDisponibilidades()
         {
-            int storeId = GetStoreIdForCurrentUser(); // Replace this with your actual logic to retrieve the store ID for the current user
-
-            string connectionString = "Data Source = tcp:mednat.ieeta.pt\\SQLSERVER,8101;" + " uid = p5g7;" + "password =Paris1020Java ";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            if (!VerifySGBDConnection())
+                return;
+            SqlCommand command = new SqlCommand("seeAvailability", conn);
+            command.CommandType = CommandType.StoredProcedure;
+            SqlDataReader reader = command.ExecuteReader();
+            listTipoCaixaAvilable.Items.Clear();
+            while (reader.Read())
             {
-                try
-                {
-                    // Create a new instance of the SqlDataAdapter
-                    dataAdapter = new SqlDataAdapter();
-
-                    // Set the SelectCommand to the stored procedure
-                    dataAdapter.SelectCommand = new SqlCommand("help_me", connection);
-                    dataAdapter.SelectCommand.CommandType = CommandType.StoredProcedure;
-                    dataAdapter.SelectCommand.Parameters.AddWithValue("@store", storeId);
-
-                    // Create a new DataTable
-                    dataTable = new DataTable();
-
-                    // Fill the DataTable with the data from the stored procedure
-                    dataAdapter.Fill(dataTable);
-
-                    // Set the DataTable as the data source for the DataGridView
-                    dataGridView2.DataSource = dataTable;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error: " + ex.Message);
-                }
+                TipoDeCaixa tc = new TipoDeCaixa();
+                tc.Name = reader["name"].ToString();
+                tc.Size = reader["size"].ToString();
+                tc.Availability = reader["availability"].ToString();
+                tc.PriceKg = reader["pricekg"].ToString();
+                listTipoCaixaAvilable.Items.Add(tc);
             }
+            reader.Close();
         }
-
-  
-
-        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-            if (e.ColumnIndex == dataGridView3.Columns["VerDetalhes"].Index && e.RowIndex >= 0)
-            {
-                int vendaId = Convert.ToInt32(dataGridView3.Rows[e.RowIndex].Cells["VendaId"].Value);
-
-                // Chame a stored procedure "getCaixasOfSale" para obter os dados
-                using (SqlConnection connection = new SqlConnection("ConnectionString"))
-                {
-                    connection.Open();
-
-                    SqlCommand command = new SqlCommand("getCaixasOfSale", connection);
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@venda", vendaId);
-
-                    SqlDataAdapter adapter = new SqlDataAdapter(command);
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
-
-                    // Popule o DataGridView com os dados retornados
-                    dataGridView2.DataSource = dataTable;
-                }
-            }
-
-
-        }
-        private void dataGridView3_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.ColumnIndex == dataGridView3.Columns["VerDetalhes"].Index && e.RowIndex >= 0)
-            {
-                int vendaId = Convert.ToInt32(dataGridView3.Rows[e.RowIndex].Cells["VendaId"].Value);
-
-                // Call the stored procedure "getCaixasOfSale" to retrieve the data
-                string connectionString = "Data Source = tcp:mednat.ieeta.pt\\SQLSERVER,8101;" + " uid = p5g7;" + "password =Paris1020Java ";
-
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
-
-                    SqlCommand command = new SqlCommand("getCaixasOfSale", connection);
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@venda", vendaId);
-
-                    SqlDataAdapter adapter = new SqlDataAdapter(command);
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
-
-                    // Populate the DataGridView with the returned data
-                    dataGridView2.DataSource = dataTable;
-                }
-            }
-        }
-   
-
-        private void BtnTamanhoP_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-        }
-      
-
-        private int GenerateId()
-        {
-            Guid guid = Guid.NewGuid();
-            return Math.Abs(guid.GetHashCode());
-        }
-        private int GenerateRandomId()
-        {
-            Random random = new Random();
-            return random.Next(1000, 9999); // Generate a random ID between 1000 and 9999
-        }
-
-
-        private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-        }
-
-        private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-        //botao de login voltar
-        private void button3_Click(object sender, EventArgs e)
-        {
-            LoginPanel homepage = new LoginPanel();
-            homepage.Show();
-            this.Hide();
-        }
-
-        private void Btn_r_reserva_Click(object sender, EventArgs e)
-        {
-            int reservaId;////
-            if (int.TryParse(TxB_Id.Text, out reservaId))
-            {
-                try
-                {
-                    string connectionString = "Data Source=tcp:mednat.ieeta.pt\\SQLSERVER,8101;User ID=p5g7;Password=Paris1020Java";
-                    string storedProcedureName = "DeleteReserva";
-
-                    using (SqlConnection connection = new SqlConnection(connectionString))
-                    {
-                        connection.Open();
-
-                        using (SqlCommand command = new SqlCommand(storedProcedureName, connection))
-                        {
-                            command.CommandType = CommandType.StoredProcedure;
-                            command.Parameters.AddWithValue("@ReservaId", reservaId);
-                            command.ExecuteNonQuery();
-                        }
-                    }
-
-                    MessageBox.Show("Reserva removida com sucesso!");
-
-                    // Atualizar o DataGridView2 com as reservas atualizadas
-                    dataGridView2_CellContentClick();
-                }
-                catch (SqlException ex)
-                {
-                    MessageBox.Show("Ocorreu um erro ao tentar remover a reserva: " + ex.Message);
-                }
-
-            }
-            else
-            {
-                MessageBox.Show("ID de reserva inválido!");
-            }
-        }
-
-        private void Btn_c_reserva_Click(object sender, EventArgs e)
-        {
-            int quantidade = Convert.ToInt32(textBox1.Text); // Get the quantity from the TextBox
-                                                             //string storeName = BtnName.SelectedItem.ToString(); // Get the selected store from the ComboBox
-            Store selectedStore = (Store)BtnName.SelectedItem;
-            string storeID = selectedStore.Id;
-            DateTime data = dateTimePicker1.Value;
-            int id = GenerateRandomId(); // Generate a random ID (you need to implement this method)
-            string size = string.Empty;
-            if (BtnTamanhoP.SelectedItem != null)
-            {
-                size = BtnTamanhoP.SelectedItem.ToString();
-            }
-
-            string connectionString = "Data Source=tcp:mednat.ieeta.pt\\SQLSERVER,8101;User ID=p5g7;Password=Paris1020Java";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                using (SqlCommand command = new SqlCommand("InsertReservation", connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
-
-                    // Adicione os parâmetros necessários para a stored procedure
-                    command.Parameters.AddWithValue("@reservationDate", data);
-                    command.Parameters.AddWithValue("@storeId", storeID);
-                    command.Parameters.AddWithValue("@code", id);
-                    command.Parameters.AddWithValue("@size", size);
-                    command.Parameters.AddWithValue("@quantity", quantidade);
-
-                    command.ExecuteNonQuery();
-                }
-            }
-            MessageBox.Show("Values inserted into the table!");
-        }
-
-
-
-
-
-        private void TBoxData_TextChanged(object sender, EventArgs e){}
-
-        private void textBox1_TextChanged(object sender, EventArgs e){}
-
-        private void dataGridView2_CellContentClick_1(object sender, DataGridViewCellEventArgs e){}
-
-        private void Client_Load(object sender, EventArgs e){}
-
-        private void dateTimePicker1_ValueChanged(object sender, EventArgs e){}
     }
-
 }

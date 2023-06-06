@@ -42,13 +42,13 @@ INSERT INTO VARIEDADE (code,[name],season,trees) VALUES
 INSERT INTO TIPODECAIXA(code,size,[availability],pricekg) VALUES
 	(1,'SMALL',0,2.99),
 	(1,'MEDIUM',0,3.99),
-	(1,'BIG',0,4.99),
-	(2,'SMALL',0,2.99),
+	(1,'BIG',4,4.99),
+	(2,'SMALL',5,2.99),
 	(2,'MEDIUM',0,3.99),
 	(2,'BIG',0,4.99),
 	(3,'SMALL',0,2.99),
 	(3,'MEDIUM',0,3.99),
-	(3,'BIG',0,4.99),
+	(3,'BIG',4,4.99),
 	(4,'SMALL',0,2.99),
 	(4,'MEDIUM',0,3.99),
 	(4,'BIG',0,4.99),
@@ -66,7 +66,7 @@ INSERT INTO TIPODECAIXA(code,size,[availability],pricekg) VALUES
 	(8,'BIG',0,4.99),
 	(9,'SMALL',0,2.99),
 	(9,'MEDIUM',0,3.99),
-	(9,'BIG',0,4.99);
+	(9,'BIG',3,4.99);
 
 INSERT INTO FITOFARMACEUTICOS([name],interval_days) VALUES
 	('Frutop 25 EW',20),
